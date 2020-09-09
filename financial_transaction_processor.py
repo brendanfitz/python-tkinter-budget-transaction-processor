@@ -44,15 +44,27 @@ class FinancialTranascationProcessor(object):
                 label = tk.Label(table, text=transaction[column])
                 label.grid(row=row_num, column=column_num)
         
-            self.tkvar = tk.StringVar(self.window)
-            dropdown = tk.OptionMenu(table, self.tkvar, *self.categories)
+            var = tk.StringVar(self.window)
+            dropdown = tk.OptionMenu(table, var, *self.categories)
             dropdown.grid(row=row_num, column=column_num+2)
             transaction['category_dropdown'] = dropdown 
+            transaction['category_var'] = var
     
 
     def create_submit_button(self):
-        b1 = tk.Button(text="Submit")
-        b1.grid(row=self.current_row_gen(), column=0)
+        b = tk.Button(text="Submit", command=self.submit)
+        b.grid(row=self.current_row_gen(), column=0)
+    
+    def submit(self):
+        for transaction in self.transaction_data:
+            transaction['category'] = transaction['category_var'].get()
+            del transaction['category_dropdown']
+            del transaction['category_var']
+        
+        pd.DataFrame(self.transaction_data).to_csv('sample_data_processed.csv')
+        self.window.destroy()
+
+
 
 
 
