@@ -7,6 +7,7 @@ import random
 
 current_row_gen = lambda c=count(): next(c)
 
+categories = pd.read_csv('categories.csv').Category.tolist()
 
 window = Tk()
 
@@ -30,18 +31,16 @@ for row_num, transaction in enumerate(data):
     for column_num, column in enumerate(columns):
         label = Label(table, text=transaction[column])
         label.grid(row=row_num, column=column_num)
-    entry = Entry(table)
-    entry.grid(row=row_num, column=column_num+1)
-    transaction['entry'] = entry
+
+    tkvar = StringVar(window)
+    dropdown = OptionMenu(table, tkvar, *categories)
+    dropdown.grid(row=row_num, column=column_num+2)
+    transaction['category_dropdown'] = dropdown 
 
 
-def print_random_trans():
-    row = random.choice(data)
-    row['entry'] = row['entry'].get()
-    print(row)
 
 
-b1 = Button(text="Submit", command=print_random_trans)
+b1 = Button(text="Submit")
 b1.grid(row=current_row_gen(), column=0)
 
 window.bind('<Escape>', lambda event: window.destroy())
