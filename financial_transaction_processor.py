@@ -10,7 +10,8 @@ class FinancialTranascationProcessor(object):
         self.window.bind('<Escape>', lambda event: self.window.destroy())
         self.current_row_gen = lambda c=count(): next(c)
         self.categories = self.read_categories()
-        self.transaction_data = self.read_data('sample_data.csv')
+        self.read_data('sample_data.csv')
+        self.font_kwargs = dict(font=('Arial',14))
 
     @staticmethod
     def read_categories():
@@ -19,11 +20,20 @@ class FinancialTranascationProcessor(object):
             .tolist()
         )
     
-    @staticmethod
-    def read_data(filename):
+    def read_data(self, filename):
         df = pd.read_csv(filename)
-        data = df.to_dict(orient='records')
-        return data
+        self.columns = df.columns
+        self.transaction_data = df.to_dict(orient='records')
+    
+    def transaction_data_to_df(self):
+        return pd.DataFrame(self.transaction_data, columns=self.columns)
+    
+    def create_column_widths_dict(self):
+        df = self.transaction_data_to_df()
+        # computes the max of either:
+        #    the column name length
+        #    the length of largest string in the column
+        return df.apply(lambda x: max(len(x.name), x.astype(str).str.len().max()))
     
     def create_title_bar(self):
         title_bar = tk.Label(
@@ -35,18 +45,34 @@ class FinancialTranascationProcessor(object):
     
     def create_table(self):
 
+        column_widths = self.create_column_widths_dict()
+
         table = tk.Frame()
         table.grid(row=self.current_row_gen(), column=0)
         
         columns = ['Transaction Date', 'Description', 'Amount']
+        for column_num, column in enumerate(columns + ['Category']):
+            width = max([len(x) for x in self.categories])+1 if column == 'Category' else column_widths[column]
+            fmt_kwargs = dict(width=width, borderwidth=2, relief='sunken', font=('Arial', 14, 'bold'))
+            label = tk.Label(table, text=column, **fmt_kwargs)
+            label.grid(row=0, column=column_num)
+
+
         for row_num, transaction in enumerate(self.transaction_data):
             for column_num, column in enumerate(columns):
-                label = tk.Label(table, text=transaction[column])
-                label.grid(row=row_num, column=column_num)
+                label = tk.Label(table, text=transaction[column],
+                    width=column_widths[column],
+                    relief='sunken',
+                    **self.font_kwargs
+                )
+                label.grid(row=row_num+1, column=column_num)
         
             var = tk.StringVar(self.window)
             dropdown = tk.OptionMenu(table, var, *self.categories)
-            dropdown.grid(row=row_num, column=column_num+2)
+            dropdown.config(
+                width=max([len(x) for x in self.categories]),
+                relief='sunken', **self.font_kwargs)
+            dropdown.grid(row=row_num+1, column=column_num+1)
             transaction['category_dropdown'] = dropdown 
             transaction['category_var'] = var
     
@@ -61,7 +87,9 @@ class FinancialTranascationProcessor(object):
             del transaction['category_dropdown']
             del transaction['category_var']
         
-        pd.DataFrame(self.transaction_data).to_csv('sample_data_processed.csv')
+        (pd.DataFrame(self.transaction_data)
+            .to_csv('sample_data_processed.csv', index=False)
+        )
         self.window.destroy()
 
 
