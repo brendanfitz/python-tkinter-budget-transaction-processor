@@ -13,16 +13,26 @@ class FinancialTranascationProcessor(object):
         self.vendor_df = self.read_vendor_lookup()
         self.font_kwargs = dict(font=('Arial', 14))
         self.create_column_widths_dict()
+
     @staticmethod
     def read_categories():
         return (pd.read_csv('categories.csv')
             .Category
             .tolist()
         )
+    
+    def category_lookup(self, vendor):
+        mask = self.vendor_df.Vendor == vendor
+        category_row = self.vendor_df.loc[mask, 'Category']
+        if not category_row.empty:
+            return category_row.values[0]
+
 
     @staticmethod
     def read_vendor_lookup():
-        return pd.read_csv('vendor_lookup.csv')
+        return (pd.read_csv('vendor_lookup.csv')
+            .sort_values(['Vendor', 'Category'])
+        )
     
     def read_data(self, filename):
         df = pd.read_csv(filename)
@@ -104,12 +114,16 @@ class FinancialTranascationProcessor(object):
     
     def create_vendor_dropdown(self, r, c):
         vendors = self.vendor_df.Vendor.unique().tolist()
+
         var = tk.StringVar(self.window)
+        var.trace('w', self.vendor_change_callback)
+
         dropdown = tk.OptionMenu(self.table_frame, var, *vendors)
         dropdown.config(
             width=max([len(x) for x in vendors]),
             relief='sunken', **self.font_kwargs)
         dropdown.grid(row=r, column=c+1)
+
         return var, dropdown
 
     def create_submit_button(self):
@@ -150,9 +164,12 @@ class FinancialTranascationProcessor(object):
         self.canvas.create_window((0, 0), window=self.table_frame, anchor="nw")
         self.canvas.configure(yscrollcommand=self.scrolly.set)
 
+    def vendor_change_callback(self, var_name, idx, access_mode):
+        row = next(filter(lambda x: x['vendor_var']._name == var_name, self.transaction_data))
 
+        category_var = row['category_var']
+        vendor = row['vendor_var'].get()
 
+        category = self.category_lookup(vendor)
 
-
-
-
+        category_var.set(category)
