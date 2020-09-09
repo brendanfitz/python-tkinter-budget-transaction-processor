@@ -62,13 +62,18 @@ class FinancialTranascationProcessor(object):
     
     def create_table(self):
 
+        self.top_bar = tk.Frame(self.window)
+        self.top_bar.grid(row=1, column=0, sticky='W')
         columns = ['Transaction Date', 'Description', 'Amount']
-        for column_num, column in enumerate(columns + ['Vendor', 'Category']):
+        for c, column in enumerate(columns + ['Vendor', 'Category']):
             width = self.calc_column_width(column)
-            fmt_kwargs = dict(width=width, borderwidth=2, relief='sunken', font=('Arial', 14))
-            label = tk.Label(self.table_frame, text=column, **fmt_kwargs)
-            label.grid(row=0, column=column_num)
+            if column in ['Vendor', 'Category']:
+                width += 4
 
+            fmt_kwargs = dict(width=width, borderwidth=2, relief='sunken', font=('Arial', 14))
+            label = tk.Label(self.top_bar, text=column, **fmt_kwargs)
+            label.grid(row=0, column=c)
+        
         for r, transaction in enumerate(self.transaction_data):
             for c, column in enumerate(columns):
                 width = self.calc_column_width(column)
@@ -77,7 +82,7 @@ class FinancialTranascationProcessor(object):
                     relief='sunken',
                     **self.font_kwargs
                 )
-                label.grid(row=r+1, column=c)
+                label.grid(row=r, column=c)
         
         
             var, dropdown = self.create_vendor_dropdown(r, c)
@@ -94,10 +99,9 @@ class FinancialTranascationProcessor(object):
         dropdown.config(
             width=max([len(x) for x in self.categories]),
             relief='sunken', **self.font_kwargs)
-        dropdown.grid(row=r+1, column=c+2)
+        dropdown.grid(row=r, column=c+2)
         return var, dropdown
     
-
     def create_vendor_dropdown(self, r, c):
         vendors = self.vendor_df.Vendor.unique().tolist()
         var = tk.StringVar(self.window)
@@ -105,12 +109,12 @@ class FinancialTranascationProcessor(object):
         dropdown.config(
             width=max([len(x) for x in vendors]),
             relief='sunken', **self.font_kwargs)
-        dropdown.grid(row=r+1, column=c+1)
+        dropdown.grid(row=r, column=c+1)
         return var, dropdown
 
     def create_submit_button(self):
         b = tk.Button(text="Submit", command=self.submit)
-        b.grid(row=2, column=0)
+        b.grid(row=3, column=0)
     
     def submit(self):
         for transaction in self.transaction_data:
@@ -129,10 +133,10 @@ class FinancialTranascationProcessor(object):
     
     def create_canvas(self):
         self.canvas = tk.Canvas(self.window, width=1250, height=250)
-        self.canvas.grid(row=1, column=0)
+        self.canvas.grid(row=2, column=0)
     
         self.scrolly = tk.Scrollbar(self.window, orient="vertical", command=self.canvas.yview)
-        self.scrolly.grid(row=1, column=1, rowspan=1)
+        self.scrolly.grid(row=2, column=1, rowspan=1, sticky='ns')
         self.table_frame = tk.Frame(self.canvas)
         self.table_frame.grid(row=0, column=0)
 
@@ -145,7 +149,6 @@ class FinancialTranascationProcessor(object):
 
         self.canvas.create_window((0, 0), window=self.table_frame, anchor="nw")
         self.canvas.configure(yscrollcommand=self.scrolly.set)
-
 
 
 
