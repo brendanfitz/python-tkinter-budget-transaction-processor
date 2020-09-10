@@ -3,6 +3,7 @@ tkinter-app.code-workspace
 sample_data.csv
 sample_data_processed.csv
 vendor_lookup.csv
+data/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
