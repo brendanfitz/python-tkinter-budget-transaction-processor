@@ -119,37 +119,54 @@ class CanvasTable(tk.Canvas):
 
     def create_category_dropdown(self, r, c, trans_id):
         var = tk.StringVar(self.master, name="category_"+str(trans_id))
-        dropdown = tk.OptionMenu(self.table_frame, var, *self.master.backend.categories)
-        dropdown.config(
-            width=max([len(x) for x in self.master.backend.categories]),
-            relief='sunken', **self.master.font_kwargs)
+        dropdown = DropDown(self.table_frame, self.master, var, 'Category')
         dropdown.grid(row=r, column=c+2)
         return var, dropdown
     
     def create_vendor_dropdown(self, r, c, trans_id):
-        vendors = self.master.backend.vendor_df.Vendor.unique().tolist()
-
         var = tk.StringVar(self.master, name="vendor_"+str(trans_id))
-        var.trace('w', self.vendor_change_callback)
-
-        dropdown = tk.OptionMenu(self.table_frame, var, *vendors)
-        dropdown.config(
-            width=max([len(x) for x in vendors]),
-            relief='sunken', **self.master.font_kwargs)
+        dropdown = DropDown(self.table_frame, self.master, var, 'Vendor')
+        var.trace('w', dropdown.vendor_change_callback)
         dropdown.grid(row=r, column=c+1)
-
         return var, dropdown
+
+class DropDown(tk.OptionMenu):
+
+    def __init__(self, master, root_frame, var, type):
+        self.root_frame = root_frame
+        if type == 'Vendor':
+            self.values = (self.root_frame.backend.vendor_df.Vendor
+                .unique()
+                .tolist()
+            )
+            var.trace('w', self.vendor_change_callback)
+        elif type == 'Category':
+            self.values = self.root_frame.backend.categories
+        else:
+            raise ValueError("Type must be 'Vendor' or 'Category'")
+        tk.OptionMenu.__init__(self, master, var, *self.values)
+        self.config(
+            width=max([len(x) for x in self.values]),
+            relief='sunken',
+            **self.root_frame.font_kwargs
+        )
 
     def vendor_change_callback(self, var_name, idx, access_mode):
         trans_id = int(var_name.split('_')[1])
         var_name_filter = lambda x: x['Transaction ID'] == trans_id 
-        row = next(filter(var_name_filter, self.master.backend.transaction_data))
+        row = next(filter(var_name_filter, self.root_frame.backend.transaction_data))
 
         category_var = row['category_var']
         vendor = row['vendor_var'].get()
 
-        category = self.master.backend.category_lookup(vendor)
+        category = self.root_frame.backend.category_lookup(vendor)
 
         category_var.set(category)
+
+    
+
+
+    
+
         
 
