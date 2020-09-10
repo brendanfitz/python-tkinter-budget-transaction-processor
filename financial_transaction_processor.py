@@ -142,7 +142,7 @@ class FinancialTranascationProcessor(object):
         self.window.destroy()
     
     def vendor_change_callback(self, var_name, idx, access_mode):
-        var_name_filter_func = lambda x: x['vendor_var']._name == var_name
+        var_name_filter = lambda x: x['vendor_var']._name == var_name
         row = next(filter(var_name_filter, self.backend.transaction_data))
 
         category_var = row['category_var']
