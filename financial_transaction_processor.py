@@ -69,12 +69,13 @@ class FinancialTranascationProcessor(object):
                 )
                 label.grid(row=r, column=c)
         
+            trans_id = transaction['Transaction ID']
         
-            var, dropdown = self.create_vendor_dropdown(r, c)
+            var, dropdown = self.create_vendor_dropdown(r, c, trans_id)
             transaction['vendor_dropdown'] = dropdown 
             transaction['vendor_var'] = var
 
-            var, dropdown = self.create_category_dropdown(r, c)
+            var, dropdown = self.create_category_dropdown(r, c, trans_id)
             transaction['category_dropdown'] = dropdown 
             transaction['category_var'] = var
 
@@ -99,8 +100,8 @@ class FinancialTranascationProcessor(object):
 
         self.column_widths = df.apply(max_of_column_name_or_longest_element)
 
-    def create_category_dropdown(self, r, c):
-        var = tk.StringVar(self.window)
+    def create_category_dropdown(self, r, c, trans_id):
+        var = tk.StringVar(self.window, name="category_"+str(trans_id))
         dropdown = tk.OptionMenu(self.table_frame, var, *self.backend.categories)
         dropdown.config(
             width=max([len(x) for x in self.backend.categories]),
@@ -108,10 +109,10 @@ class FinancialTranascationProcessor(object):
         dropdown.grid(row=r, column=c+2)
         return var, dropdown
     
-    def create_vendor_dropdown(self, r, c):
+    def create_vendor_dropdown(self, r, c, trans_id):
         vendors = self.backend.vendor_df.Vendor.unique().tolist()
 
-        var = tk.StringVar(self.window)
+        var = tk.StringVar(self.window, name="vendor_"+str(trans_id))
         var.trace('w', self.vendor_change_callback)
 
         dropdown = tk.OptionMenu(self.table_frame, var, *vendors)
@@ -132,7 +133,8 @@ class FinancialTranascationProcessor(object):
         self.window.destroy()
     
     def vendor_change_callback(self, var_name, idx, access_mode):
-        var_name_filter = lambda x: x['vendor_var']._name == var_name
+        trans_id = int(var_name.split('_')[1])
+        var_name_filter = lambda x: x['Transaction ID'] == trans_id 
         row = next(filter(var_name_filter, self.backend.transaction_data))
 
         category_var = row['category_var']
