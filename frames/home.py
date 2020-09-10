@@ -80,12 +80,9 @@ class HomeFrame(tk.Frame):
         self.bottom_bar_frame.grid(row=4, column=0)
     
     def create_add_vendor_button(self):
-        btn = tk.Button(self.bottom_bar_frame, text="Add Vendor", command=self.add_vendor_pop)
+        btn = tk.Button(self.bottom_bar_frame, text="Add Vendor", command=VendorEntryPopup(self))
         btn.grid(row=0, column=0)
     
-    def add_vendor_pop(self):
-        VendorEntryPopup(self)
-
     def create_add_category_button(self):
         btn = tk.Button(self.bottom_bar_frame, text="Add Category", command=lambda: print("Add Category Button"))
         btn.grid(row=0, column=1)
