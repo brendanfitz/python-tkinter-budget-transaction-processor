@@ -10,7 +10,7 @@ class FinancialTranascationProcessor(tk.Frame):
         self.grid(row=0, column=0)
         self.backend = Backend()
         self.current_row_gen = lambda c=count(): next(c)
-        self.font_kwargs = dict(font=('Arial', 12))
+        self.font_kwargs = dict(font=('Arial', 10))
         self.create_column_widths_dict()
 
     def create_title(self):
