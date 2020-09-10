@@ -1,10 +1,12 @@
 from itertools import count
 import pandas as pd
 import tkinter as tk
+from backend import Backend
 
 class FinancialTranascationProcessor(object):
 
     def __init__(self):
+        self.backend = Backend()
         self.window = tk.Tk()
         self.window.bind('<Escape>', lambda event: self.window.destroy())
         self.current_row_gen = lambda c=count(): next(c)
