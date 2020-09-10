@@ -5,13 +5,32 @@ class Backend(object):
 
     def __init__(self):
         self.read_data('sample_data.csv')
+        self.categories = self.read_categories()
+        self.vendor_df = self.read_vendor_lookup()
 
     def read_data(self, filename):
         df = pd.read_csv(filename)
-        self.columns = df.columns
+        self.columns = df.columns.tolist()
         self.transaction_data = df.to_dict(orient='records')
-        self.categories = self.read_categories()
-        self.vendor_df = self.read_vendor_lookup()
+        self.add_transaction_hash()
+    
+    def add_transaction_hash(self):
+        for transaction in self.transaction_data:
+            transaction_hash = hash(
+                (
+                    transaction['Transaction Date'],
+                    transaction['Description'],
+                    transaction['Amount'],
+                )
+            )
+            transaction['Transaction ID'] = transaction_hash
+        self.columns.insert(0, 'Transaction ID')
+        self.check_hash_uniqueness()
+    
+    def check_hash_uniqueness(self):
+        df = self.transaction_data_to_df()
+        if df.loc[:, 'Transaction ID'].duplicated().any():
+            raise ValueError("Duplicates across Transaction Date, Description and Amount dimensions")
     
     @staticmethod
     def read_categories():

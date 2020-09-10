@@ -10,7 +10,7 @@ class FinancialTranascationProcessor(object):
         self.window = tk.Tk()
         self.window.bind('<Escape>', lambda event: self.window.destroy())
         self.current_row_gen = lambda c=count(): next(c)
-        self.font_kwargs = dict(font=('Arial', 14))
+        self.font_kwargs = dict(font=('Arial', 12))
         self.create_column_widths_dict()
 
     def create_title_bar(self):
@@ -49,13 +49,13 @@ class FinancialTranascationProcessor(object):
             if column in ['Vendor', 'Category']:
                 width += 4
 
-            fmt_kwargs = dict(width=width, borderwidth=2, relief='sunken', font=('Arial', 14))
+            fmt_kwargs = dict(width=width, borderwidth=2, relief='sunken', **self.font_kwargs)
             label = tk.Label(self.top_bar, text=column, **fmt_kwargs)
             label.grid(row=0, column=c)
         
     def create_table(self):
 
-        columns = ['Transaction Date', 'Description', 'Amount']
+        columns = ['Transaction ID', 'Transaction Date', 'Description', 'Amount']
 
         self.create_top_bar(columns)
         
