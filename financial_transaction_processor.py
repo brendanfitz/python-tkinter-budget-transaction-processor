@@ -8,10 +8,6 @@ class FinancialTranascationProcessor(tk.Tk):
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
         self.home_frame = HomeFrame(self)
-        self.home_frame.create_title()
-        self.home_frame.create_top_bar()
-        self.home_frame.create_canvas()
-        self.home_frame.create_submit_button()
 
 class HomeFrame(tk.Frame):
 
@@ -22,6 +18,10 @@ class HomeFrame(tk.Frame):
         self.current_row_gen = lambda c=count(): next(c)
         self.font_kwargs = dict(font=('Arial', 10))
         self.create_column_widths_dict()
+        self.create_title()
+        self.create_top_bar()
+        self.create_canvas()
+        self.create_submit_button()
 
     def create_title(self):
         self.title = tk.Label(
