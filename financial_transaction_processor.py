@@ -3,19 +3,19 @@ import pandas as pd
 import tkinter as tk
 from backend import Backend
 
-class FinancialTranascationProcessor(object):
+class FinancialTranascationProcessor(tk.Frame):
 
-    def __init__(self):
+    def __init__(self, master):
+        tk.Frame.__init__(self, master)
+        self.grid(row=0, column=0)
         self.backend = Backend()
-        self.window = tk.Tk()
-        self.window.bind('<Escape>', lambda event: self.window.destroy())
         self.current_row_gen = lambda c=count(): next(c)
         self.font_kwargs = dict(font=('Arial', 12))
         self.create_column_widths_dict()
 
     def create_title_bar(self):
         title_bar = tk.Label(
-            self.window,
+            self,
             text="Financial Transaction Processor",
             fg="white",
             bg="black",
@@ -23,10 +23,10 @@ class FinancialTranascationProcessor(object):
         title_bar.grid(row=0, column=0, columnspan=2)
 
     def create_canvas(self):
-        self.canvas = tk.Canvas(self.window, width=1250, height=250)
+        self.canvas = tk.Canvas(self, width=1250, height=250)
         self.canvas.grid(row=2, column=0)
     
-        self.scrolly = tk.Scrollbar(self.window, orient="vertical", command=self.canvas.yview)
+        self.scrolly = tk.Scrollbar(self, orient="vertical", command=self.canvas.yview)
         self.scrolly.grid(row=2, column=1, rowspan=1, sticky='ns')
         self.table_frame = tk.Frame(self.canvas)
         self.table_frame.grid(row=0, column=0)
@@ -42,7 +42,7 @@ class FinancialTranascationProcessor(object):
         self.canvas.configure(yscrollcommand=self.scrolly.set)
     
     def create_top_bar(self, columns):
-        self.top_bar = tk.Frame(self.window)
+        self.top_bar = tk.Frame(self)
         self.top_bar.grid(row=1, column=0, sticky='W')
         for c, column in enumerate(columns + ['Vendor', 'Category']):
             width = self.calc_column_width(column)
@@ -101,7 +101,7 @@ class FinancialTranascationProcessor(object):
         self.column_widths = df.apply(max_of_column_name_or_longest_element)
 
     def create_category_dropdown(self, r, c, trans_id):
-        var = tk.StringVar(self.window, name="category_"+str(trans_id))
+        var = tk.StringVar(self, name="category_"+str(trans_id))
         dropdown = tk.OptionMenu(self.table_frame, var, *self.backend.categories)
         dropdown.config(
             width=max([len(x) for x in self.backend.categories]),
@@ -112,7 +112,7 @@ class FinancialTranascationProcessor(object):
     def create_vendor_dropdown(self, r, c, trans_id):
         vendors = self.backend.vendor_df.Vendor.unique().tolist()
 
-        var = tk.StringVar(self.window, name="vendor_"+str(trans_id))
+        var = tk.StringVar(self, name="vendor_"+str(trans_id))
         var.trace('w', self.vendor_change_callback)
 
         dropdown = tk.OptionMenu(self.table_frame, var, *vendors)
@@ -124,13 +124,13 @@ class FinancialTranascationProcessor(object):
         return var, dropdown
 
     def create_submit_button(self):
-        b = tk.Button(text="Submit", command=self.submit)
+        b = tk.Button(self, text="Submit", command=self.submit)
         b.grid(row=3, column=0)
     
     def submit(self):
         self.backend.process_button_variables()
 
-        self.window.destroy()
+        self.master.destroy()
     
     def vendor_change_callback(self, var_name, idx, access_mode):
         trans_id = int(var_name.split('_')[1])
