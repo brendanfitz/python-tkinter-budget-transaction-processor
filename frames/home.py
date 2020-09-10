@@ -2,6 +2,7 @@ from itertools import count
 import tkinter as tk
 from widgets.canvas_table import CanvasTable
 from widgets.vendor_entry_popup import VendorEntryPopup
+from widgets.category_entry_popup import CategoryEntryPopup 
 
 class HomeFrame(tk.Frame):
 
@@ -80,9 +81,9 @@ class HomeFrame(tk.Frame):
         self.bottom_bar_frame.grid(row=4, column=0)
     
     def create_add_vendor_button(self):
-        btn = tk.Button(self.bottom_bar_frame, text="Add Vendor", command=VendorEntryPopup(self))
+        btn = tk.Button(self.bottom_bar_frame, text="Add Vendor", command=lambda: VendorEntryPopup(self))
         btn.grid(row=0, column=0)
     
     def create_add_category_button(self):
-        btn = tk.Button(self.bottom_bar_frame, text="Add Category", command=lambda: print("Add Category Button"))
+        btn = tk.Button(self.bottom_bar_frame, text="Add Category", command=lambda: CategoryEntryPopup(self))
         btn.grid(row=0, column=1)

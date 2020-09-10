@@ -80,3 +80,14 @@ class Backend(object):
         self.vendor_df = self.vendor_df.append(new_row)
         self.vendor_df.to_csv('vendor_lookup.csv', index=False)
     
+    def add_category(self, category):
+        if category in self.categories:
+            raise ValueError("Category already exists")
+        self.categories.append(category)
+        self.write_categories()
+
+    def write_categories(self):
+        (pd.DataFrame(self.categories, columns=['Category'])
+            .to_csv('categories.csv', index=False)
+        )
+        
