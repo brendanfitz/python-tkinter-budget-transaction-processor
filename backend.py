@@ -68,3 +68,15 @@ class Backend(object):
             .to_csv('sample_data_processed.csv', index=False)
         )
     
+    def add_vendor(self, vendor, category):
+        mask = self.vendor_df.loc[:, 'Vendor'] == vendor
+        if not self.vendor_df.loc[mask, ].empty:
+            raise ValueError("Vendor already exists")
+        
+        new_row = pd.DataFrame(
+            [[category, vendor]],
+            columns=self.vendor_df.columns
+        )
+        self.vendor_df = self.vendor_df.append(new_row)
+        self.vendor_df.to_csv('vendor_lookup.csv', index=False)
+    

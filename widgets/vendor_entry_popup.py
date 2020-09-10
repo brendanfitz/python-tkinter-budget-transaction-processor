@@ -1,4 +1,4 @@
-from tkinter import Toplevel, Entry, Button, StringVar
+from tkinter import Toplevel, Entry, Button, StringVar, messagebox
 from widgets.dropdown import DropDown
 
 
@@ -17,5 +17,18 @@ class VendorEntryPopup(Toplevel):
         btn.grid(row=2, column=0)
     
     def add_vendor(self):
-        print("Vendor: {}".format(self.vendor_entry.get()))
-        print("Category: {}".format(self.category_var.get()))
+        vendor = self.vendor_entry.get()
+        category = self.category_var.get()
+        if vendor == '':
+            messagebox.showerror('Error', 'No vendor provided')
+        elif category == '':
+            messagebox.showerror('Error', 'No category provided')
+        else:
+            try:
+                self.controller.backend.add_vendor(vendor, category)
+                self.destroy()
+            except ValueError:
+                messagebox.showerror("Error", "Vendor Already Exists")
+
+
+
