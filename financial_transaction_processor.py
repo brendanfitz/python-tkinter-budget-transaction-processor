@@ -72,17 +72,9 @@ class FinancialTranascationProcessor(object):
     
     def create_table(self):
 
-        self.top_bar = tk.Frame(self.window)
-        self.top_bar.grid(row=1, column=0, sticky='W')
         columns = ['Transaction Date', 'Description', 'Amount']
-        for c, column in enumerate(columns + ['Vendor', 'Category']):
-            width = self.calc_column_width(column)
-            if column in ['Vendor', 'Category']:
-                width += 4
 
-            fmt_kwargs = dict(width=width, borderwidth=2, relief='sunken', font=('Arial', 14))
-            label = tk.Label(self.top_bar, text=column, **fmt_kwargs)
-            label.grid(row=0, column=c)
+        self.create_top_bar(columns)
         
         for r, transaction in enumerate(self.transaction_data):
             for c, column in enumerate(columns):
@@ -103,6 +95,18 @@ class FinancialTranascationProcessor(object):
             transaction['category_dropdown'] = dropdown 
             transaction['category_var'] = var
     
+    def create_top_bar(self, columns):
+        self.top_bar = tk.Frame(self.window)
+        self.top_bar.grid(row=1, column=0, sticky='W')
+        for c, column in enumerate(columns + ['Vendor', 'Category']):
+            width = self.calc_column_width(column)
+            if column in ['Vendor', 'Category']:
+                width += 4
+
+            fmt_kwargs = dict(width=width, borderwidth=2, relief='sunken', font=('Arial', 14))
+            label = tk.Label(self.top_bar, text=column, **fmt_kwargs)
+            label.grid(row=0, column=c)
+        
     def create_category_dropdown(self, r, c):
         var = tk.StringVar(self.window)
         dropdown = tk.OptionMenu(self.table_frame, var, *self.categories)
@@ -173,3 +177,4 @@ class FinancialTranascationProcessor(object):
         category = self.category_lookup(vendor)
 
         category_var.set(category)
+    
