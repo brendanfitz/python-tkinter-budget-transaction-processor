@@ -1,6 +1,5 @@
 from itertools import count
 import tkinter as tk
-from backend import Backend
 from widgets.canvas_table import CanvasTable
 from widgets.vendor_entry_popup import VendorEntryPopup
 
@@ -8,8 +7,9 @@ class HomeFrame(tk.Frame):
 
     def __init__(self, master):
         tk.Frame.__init__(self, master)
+        self.backend = self.master.backend
+
         self.grid(row=0, column=0)
-        self.backend = Backend()
         self.current_row_gen = lambda c=count(): next(c)
         self.font_kwargs = dict(font=('Arial', 10))
         self.create_column_widths_dict()
