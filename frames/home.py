@@ -2,6 +2,7 @@ from itertools import count
 import tkinter as tk
 from backend import Backend
 from widgets.canvas_table import CanvasTable
+from widgets.vendor_entry_popup import VendorEntryPopup
 
 class HomeFrame(tk.Frame):
 
@@ -16,6 +17,7 @@ class HomeFrame(tk.Frame):
         self.create_top_bar()
         self.create_canvas()
         self.create_submit_button()
+        self.create_add_vendor_button()
 
     def create_title(self):
         self.title = tk.Label(
@@ -64,10 +66,16 @@ class HomeFrame(tk.Frame):
         self.column_widths = df.apply(max_of_column_name_or_longest_element)
 
     def create_submit_button(self):
-        b = tk.Button(self, text="Submit", command=self.submit)
-        b.grid(row=3, column=0)
+        btn = tk.Button(self, text="Submit", command=self.submit)
+        btn.grid(row=3, column=0)
     
     def submit(self):
         self.backend.process_button_variables()
-
         self.master.destroy()
+    
+    def create_add_vendor_button(self):
+        btn = tk.Button(self, text="Add Vendor", command=self.add_vendor_pop)
+        btn.grid(row=4, column=0)
+    
+    def add_vendor_pop(self):
+        VendorEntryPopup(self)
