@@ -3,7 +3,17 @@ import pandas as pd
 import tkinter as tk
 from backend import Backend
 
-class FinancialTranascationProcessor(tk.Frame):
+class FinancialTranascationProcessor(tk.Tk):
+
+    def __init__(self, *args, **kwargs):
+        tk.Tk.__init__(self, *args, **kwargs)
+        self.home_frame = HomeFrame(self)
+        self.home_frame.create_title()
+        self.home_frame.create_top_bar()
+        self.home_frame.create_canvas()
+        self.home_frame.create_submit_button()
+
+class HomeFrame(tk.Frame):
 
     def __init__(self, master):
         tk.Frame.__init__(self, master)
