@@ -13,19 +13,6 @@ class FinancialTranascationProcessor(object):
         self.font_kwargs = dict(font=('Arial', 14))
         self.create_column_widths_dict()
 
-    def create_column_widths_dict(self):
-        df = self.backend.transaction_data_to_df()
-
-        def max_of_column_name_or_longest_element(x):
-            """
-            computes the max of either:
-                the column name length
-                the length of largest string in the column
-            """
-            return max(len(x.name), x.astype(str).str.len().max())
-
-        self.column_widths = df.apply(max_of_column_name_or_longest_element)
-    
     def create_title_bar(self):
         title_bar = tk.Label(
             self.window,
@@ -34,15 +21,38 @@ class FinancialTranascationProcessor(object):
             bg="black",
         )
         title_bar.grid(row=0, column=0, columnspan=2)
+
+    def create_canvas(self):
+        self.canvas = tk.Canvas(self.window, width=1250, height=250)
+        self.canvas.grid(row=2, column=0)
     
-    def calc_column_width(self, column):
-        if column == 'Category':
-            return max([len(x) for x in self.backend.categories + ['Category']])
-        elif column == 'Vendor':
-            vendors = self.backend.vendor_df.Vendor.unique().tolist()
-            return max([len(x) for x in vendors + ['Vendor']])
-        return self.column_widths[column]
+        self.scrolly = tk.Scrollbar(self.window, orient="vertical", command=self.canvas.yview)
+        self.scrolly.grid(row=2, column=1, rowspan=1, sticky='ns')
+        self.table_frame = tk.Frame(self.canvas)
+        self.table_frame.grid(row=0, column=0)
+
+        self.table_frame.bind(
+            "<Configure>",
+            lambda e: self.canvas.configure(
+                scrollregion=self.canvas.bbox("all")
+            )
+        )
+
+        self.canvas.create_window((0, 0), window=self.table_frame, anchor="nw")
+        self.canvas.configure(yscrollcommand=self.scrolly.set)
     
+    def create_top_bar(self, columns):
+        self.top_bar = tk.Frame(self.window)
+        self.top_bar.grid(row=1, column=0, sticky='W')
+        for c, column in enumerate(columns + ['Vendor', 'Category']):
+            width = self.calc_column_width(column)
+            if column in ['Vendor', 'Category']:
+                width += 4
+
+            fmt_kwargs = dict(width=width, borderwidth=2, relief='sunken', font=('Arial', 14))
+            label = tk.Label(self.top_bar, text=column, **fmt_kwargs)
+            label.grid(row=0, column=c)
+        
     def create_table(self):
 
         columns = ['Transaction Date', 'Description', 'Amount']
@@ -67,19 +77,28 @@ class FinancialTranascationProcessor(object):
             var, dropdown = self.create_category_dropdown(r, c)
             transaction['category_dropdown'] = dropdown 
             transaction['category_var'] = var
-    
-    def create_top_bar(self, columns):
-        self.top_bar = tk.Frame(self.window)
-        self.top_bar.grid(row=1, column=0, sticky='W')
-        for c, column in enumerate(columns + ['Vendor', 'Category']):
-            width = self.calc_column_width(column)
-            if column in ['Vendor', 'Category']:
-                width += 4
 
-            fmt_kwargs = dict(width=width, borderwidth=2, relief='sunken', font=('Arial', 14))
-            label = tk.Label(self.top_bar, text=column, **fmt_kwargs)
-            label.grid(row=0, column=c)
-        
+    def calc_column_width(self, column):
+        if column == 'Category':
+            return max([len(x) for x in self.backend.categories + ['Category']])
+        elif column == 'Vendor':
+            vendors = self.backend.vendor_df.Vendor.unique().tolist()
+            return max([len(x) for x in vendors + ['Vendor']])
+        return self.column_widths[column]
+    
+    def create_column_widths_dict(self):
+        df = self.backend.transaction_data_to_df()
+
+        def max_of_column_name_or_longest_element(x):
+            """
+            computes the max of either:
+                the column name length
+                the length of largest string in the column
+            """
+            return max(len(x.name), x.astype(str).str.len().max())
+
+        self.column_widths = df.apply(max_of_column_name_or_longest_element)
+
     def create_category_dropdown(self, r, c):
         var = tk.StringVar(self.window)
         dropdown = tk.OptionMenu(self.table_frame, var, *self.backend.categories)
@@ -122,32 +141,13 @@ class FinancialTranascationProcessor(object):
         )
         self.window.destroy()
     
-    def create_canvas(self):
-        self.canvas = tk.Canvas(self.window, width=1250, height=250)
-        self.canvas.grid(row=2, column=0)
-    
-        self.scrolly = tk.Scrollbar(self.window, orient="vertical", command=self.canvas.yview)
-        self.scrolly.grid(row=2, column=1, rowspan=1, sticky='ns')
-        self.table_frame = tk.Frame(self.canvas)
-        self.table_frame.grid(row=0, column=0)
-
-        self.table_frame.bind(
-            "<Configure>",
-            lambda e: self.canvas.configure(
-                scrollregion=self.canvas.bbox("all")
-            )
-        )
-
-        self.canvas.create_window((0, 0), window=self.table_frame, anchor="nw")
-        self.canvas.configure(yscrollcommand=self.scrolly.set)
-
     def vendor_change_callback(self, var_name, idx, access_mode):
-        row = next(filter(lambda x: x['vendor_var']._name == var_name, self.transaction_data))
+        row = next(filter(lambda x: x['vendor_var']._name == var_name, self.backend.transaction_data))
 
         category_var = row['category_var']
         vendor = row['vendor_var'].get()
 
-        category = self.category_lookup(vendor)
+        category = self.backend.category_lookup(vendor)
 
         category_var.set(category)
     
