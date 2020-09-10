@@ -26,6 +26,8 @@ class VendorEntryPopup(Toplevel):
         else:
             try:
                 self.controller.backend.add_vendor(vendor, category)
+                for transaction in self.controller.backend.transaction_data:
+                    transaction['vendor_dropdown'].add_vendor(vendor)
                 self.destroy()
             except ValueError:
                 messagebox.showerror("Error", "Vendor Already Exists")

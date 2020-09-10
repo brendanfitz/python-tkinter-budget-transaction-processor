@@ -32,10 +32,12 @@ class DropDown(OptionMenu):
         category = self.controller.backend.category_lookup(vendor)
 
         category_var.set(category)
-
     
+    def add_vendor(self, vendor):
+        self.values = (self.controller.backend.vendor_df.Vendor
+            .unique()
+            .tolist()
+        )
+        self['menu'].add_command(label=vendor, command=None)
+       
 
-
-    
-
-        
