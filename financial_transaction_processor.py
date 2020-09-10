@@ -127,18 +127,8 @@ class FinancialTranascationProcessor(object):
         b.grid(row=3, column=0)
     
     def submit(self):
-        for transaction in self.backend.transaction_data:
-            transaction['category'] = transaction['category_var'].get()
-            del transaction['category_dropdown']
-            del transaction['category_var']
+        self.backend.process_button_variables()
 
-            transaction['vendor'] = transaction['vendor_var'].get()
-            del transaction['vendor_dropdown']
-            del transaction['vendor_var']
-        
-        (pd.DataFrame(self.backend.transaction_data)
-            .to_csv('sample_data_processed.csv', index=False)
-        )
         self.window.destroy()
     
     def vendor_change_callback(self, var_name, idx, access_mode):

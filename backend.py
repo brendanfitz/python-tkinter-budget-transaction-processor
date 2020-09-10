@@ -35,3 +35,17 @@ class Backend(object):
     def transaction_data_to_df(self):
         return pd.DataFrame(self.transaction_data, columns=self.columns)
     
+    def process_button_variables(self):
+        for transaction in self.transaction_data:
+            transaction['category'] = transaction['category_var'].get()
+            del transaction['category_dropdown']
+            del transaction['category_var']
+
+            transaction['vendor'] = transaction['vendor_var'].get()
+            del transaction['vendor_dropdown']
+            del transaction['vendor_var']
+        
+        (pd.DataFrame(self.transaction_data)
+            .to_csv('sample_data_processed.csv', index=False)
+        )
+    
