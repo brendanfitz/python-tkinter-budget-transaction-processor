@@ -17,7 +17,9 @@ class HomeFrame(tk.Frame):
         self.create_top_bar()
         self.create_canvas()
         self.create_submit_button()
+        self.create_bottom_bar()
         self.create_add_vendor_button()
+        self.create_add_category_button()
 
     def create_title(self):
         self.title = tk.Label(
@@ -73,9 +75,17 @@ class HomeFrame(tk.Frame):
         self.backend.process_button_variables()
         self.master.destroy()
     
+    def create_bottom_bar(self):
+        self.bottom_bar_frame = tk.Frame(self)
+        self.bottom_bar_frame.grid(row=4, column=0)
+    
     def create_add_vendor_button(self):
-        btn = tk.Button(self, text="Add Vendor", command=self.add_vendor_pop)
-        btn.grid(row=4, column=0)
+        btn = tk.Button(self.bottom_bar_frame, text="Add Vendor", command=self.add_vendor_pop)
+        btn.grid(row=0, column=0)
     
     def add_vendor_pop(self):
         VendorEntryPopup(self)
+
+    def create_add_category_button(self):
+        btn = tk.Button(self.bottom_bar_frame, text="Add Category", command=lambda: print("Add Category Button"))
+        btn.grid(row=0, column=1)
