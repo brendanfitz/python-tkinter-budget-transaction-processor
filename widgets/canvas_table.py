@@ -32,9 +32,11 @@ class CanvasTable(tk.Canvas):
         for r, transaction in enumerate(self.master.backend.transaction_data):
             for c, column in enumerate(columns):
                 width = self.master.calc_column_width(column)
-                label = tk.Label(self.table_frame, text=transaction[column],
+                label = tk.Label(
+                    self.table_frame,
+                    text=transaction[column],
                     width=width,
-                    relief='sunken',
+                    height=2,
                     **self.master.font_kwargs
                 )
                 label.grid(row=r, column=c)

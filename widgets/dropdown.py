@@ -1,15 +1,16 @@
 import tkinter as tk
+from tkinter import ttk
 
-class DropDown(tk.OptionMenu):
+class DropDown(ttk.Combobox):
 
     def __init__(self, master, controller, var, type_):
         self.controller = controller 
         self.var = var
         self.set_values(type_, var)
-        tk.OptionMenu.__init__(self, master, var, *self.values)
+        ttk.Combobox.__init__(self, master, text="Choose Vendor/Category", textvariable=var, values=self.values)
         self.config(
+            height=2,
             width=max([len(x) for x in self.values]),
-            relief='sunken',
             **self.controller.font_kwargs
         )
 
@@ -38,9 +39,9 @@ class DropDown(tk.OptionMenu):
         category_var.set(category)
     
     def add_vendor(self, vendor):
-        self['menu'].add_command(label=vendor, command=tk._setit(self.var, vendor))
+        self['values'] = (*self['values'], vendor)
        
     def add_category(self, category):
-        self['menu'].add_command(label=category, command=tk._setit(self.var, category))
+        self['values'] = (*self['values'], category)
        
 

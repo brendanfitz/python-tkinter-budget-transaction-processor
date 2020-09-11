@@ -30,8 +30,7 @@ class HomeFrame(tk.Frame):
         self.title = tk.Label(
             self,
             text="Financial Transaction Processor",
-            fg="white",
-            bg="black",
+            font=("Arial", 18)
         )
         self.title.grid(row=0, column=0, columnspan=2)
 
@@ -44,7 +43,7 @@ class HomeFrame(tk.Frame):
             if column in ['Vendor', 'Category']:
                 width += 4
 
-            fmt_kwargs = dict(width=width, borderwidth=2, relief='sunken', **self.font_kwargs)
+            fmt_kwargs = dict(width=width, borderwidth=2, **self.font_kwargs)
             label = tk.Label(self.top_bar, text=column, **fmt_kwargs)
             label.grid(row=0, column=c)
 
