@@ -4,7 +4,7 @@ from frames.home import HomeFrame
 
 class FinancialTranascationProcessor(Tk):
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, filename, *args, **kwargs):
         Tk.__init__(self, *args, **kwargs)
-        self.backend = Backend()
+        self.backend = Backend(filename)
         self.home_frame = HomeFrame(self)

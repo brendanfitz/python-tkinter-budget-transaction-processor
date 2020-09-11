@@ -1,14 +1,15 @@
-from os import path
+from os import path, mkdir
 import pandas as pd
 
 class Backend(object):
 
-    def __init__(self):
+    def __init__(self, filename):
+        self.filename = filename
         self.datapath = 'data'
         if not path.isdir('data'):
-            os.mkdir('data')
+            mkdir('data')
 
-        self.read_data(path.join(self.datapath, 'sample_data.csv'))
+        self.read_data(path.join(self.datapath, self.filename))
 
         self.categories_filepath = path.join(self.datapath, 'categories.csv')
         self.categories = self.read_categories()
@@ -70,10 +71,7 @@ class Backend(object):
             del transaction['vendor_dropdown']
             del transaction['vendor_var']
         
-        filepath = path.join(self.datapath, 'sample_data_processed.csv')
-        (pd.DataFrame(self.transaction_data)
-            .to_csv(filepath, index=False)
-        )
+        self.write_transactions()
     
     def add_vendor(self, vendor, category):
         mask = self.vendor_df.loc[:, 'Vendor'] == vendor
@@ -85,7 +83,7 @@ class Backend(object):
             columns=self.vendor_df.columns
         )
         self.vendor_df = self.vendor_df.append(new_row)
-        self.vendor_df.to_csv(self.vendors_filepath, index=False)
+        self.write_vendors()
     
     def add_category(self, category):
         if category in self.categories:
@@ -98,3 +96,13 @@ class Backend(object):
             .to_csv(self.categories_filepath, index=False)
         )
         
+    def write_vendors(self):
+        self.vendor_df.to_csv(self.vendors_filepath, index=False)
+    
+    def write_transactions(self):
+        root, ext= path.splitext(self.filename)
+        filename = root + '_processed' + ext 
+        filepath = path.join(self.datapath, filename)
+        (pd.DataFrame(self.transaction_data)
+            .to_csv(filepath, index=False)
+        )
