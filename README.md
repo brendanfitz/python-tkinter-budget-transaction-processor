@@ -2,7 +2,7 @@
 
 If you need an application to category your bank transaction, look no further!
 
-This is tool showcase my skills with Tkinter, python's built-in GUI library.
+This tool showcases my skills with Tkinter, python's built-in GUI library.
 
 ### Package Installation
 
