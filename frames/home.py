@@ -6,9 +6,10 @@ from widgets.category_entry_popup import CategoryEntryPopup
 
 class HomeFrame(tk.Frame):
 
-    def __init__(self, master):
+    def __init__(self, master, controller):
         tk.Frame.__init__(self, master)
-        self.backend = self.master.backend
+        self.controller = controller
+        self.backend = self.controller.backend
 
         self.grid(row=0, column=0)
         self.current_row_gen = lambda c=count(): next(c)
@@ -74,7 +75,7 @@ class HomeFrame(tk.Frame):
     
     def submit(self):
         self.backend.process_button_variables()
-        self.master.destroy()
+        self.controller.destroy()
     
     def create_bottom_bar(self):
         self.bottom_bar_frame = tk.Frame(self)
