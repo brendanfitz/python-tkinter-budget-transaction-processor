@@ -1,25 +1,29 @@
-from tkinter import OptionMenu
+import tkinter as tk
 
-class DropDown(OptionMenu):
+class DropDown(tk.OptionMenu):
 
-    def __init__(self, master, controller, var, type):
+    def __init__(self, master, controller, var, type_):
         self.controller = controller 
-        if type == 'Vendor':
-            self.values = (self.controller.backend.vendor_df.Vendor
-                .unique()
-                .tolist()
-            )
-            var.trace('w', self.vendor_change_callback)
-        elif type == 'Category':
-            self.values = self.controller.backend.categories
-        else:
-            raise ValueError("Type must be 'Vendor' or 'Category'")
-        OptionMenu.__init__(self, master, var, *self.values)
+        self.var = var
+        self.set_values(type_, var)
+        tk.OptionMenu.__init__(self, master, var, *self.values)
         self.config(
             width=max([len(x) for x in self.values]),
             relief='sunken',
             **self.controller.font_kwargs
         )
+
+    def set_values(self, type_, var):
+        if type_ == 'Vendor':
+            self.values = (self.controller.backend.vendor_df.Vendor
+                .unique()
+                .tolist()
+            )
+            var.trace('w', self.vendor_change_callback)
+        elif type_ == 'Category':
+            self.values = self.controller.backend.categories
+        else:
+            raise ValueError("Type must be 'Vendor' or 'Category'")
 
     def vendor_change_callback(self, var_name, idx, access_mode):
         trans_id = int(var_name.split('_')[1])
@@ -34,9 +38,9 @@ class DropDown(OptionMenu):
         category_var.set(category)
     
     def add_vendor(self, vendor):
-        self['menu'].add_command(label=vendor, command=None)
+        self['menu'].add_command(label=vendor, command=tk._setit(self.var, vendor))
        
     def add_category(self, category):
-        self['menu'].add_command(label=category, command=None)
+        self['menu'].add_command(label=category, command=tk._setit(self.var, category))
        
 
