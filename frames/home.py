@@ -15,6 +15,7 @@ class HomeFrame(tk.Frame):
         self.font_kwargs = dict(font=('Arial', 10))
 
     def create_widgets(self):
+        self.pack_forget()
         self.create_column_widths_dict()
         self.create_title()
         self.create_top_bar()
