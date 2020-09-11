@@ -28,7 +28,8 @@ class FileSelectFrame(Frame):
             title='Choose a file',
             filetype = (("csv files","*.csv"),("all files","*.*")),
         )
-        self.file_label.config(text=self.filepath)
+        _, filename = path.split(self.filepath)
+        self.file_label.config(text=filename)
     
     def submit(self):
         if self.filepath is not None:
