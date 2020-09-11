@@ -7,7 +7,12 @@ class DropDown(ttk.Combobox):
         self.controller = controller 
         self.var = var
         self.set_values(type_, var)
-        ttk.Combobox.__init__(self, master, text="Choose Vendor/Category", textvariable=var, values=self.values)
+        ttk.Combobox.__init__(self, 
+            master,
+            text="Choose Vendor/Category",
+            textvariable=var,
+            values=self.values,
+        )
         self.config(
             height=2,
             width=max([len(x) for x in self.values]),
