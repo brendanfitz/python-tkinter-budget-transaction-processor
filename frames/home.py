@@ -11,7 +11,6 @@ class HomeFrame(tk.Frame):
         self.controller = controller
         self.backend = self.controller.backend
 
-        self.grid(row=0, column=0)
         self.current_row_gen = lambda c=count(): next(c)
         self.font_kwargs = dict(font=('Arial', 10))
         self.create_column_widths_dict()
@@ -22,6 +21,7 @@ class HomeFrame(tk.Frame):
         self.create_bottom_bar()
         self.create_add_vendor_button()
         self.create_add_category_button()
+        self.create_file_select_frame_button()
 
     def create_title(self):
         self.title = tk.Label(
@@ -88,3 +88,7 @@ class HomeFrame(tk.Frame):
     def create_add_category_button(self):
         btn = tk.Button(self.bottom_bar_frame, text="Add Category", command=lambda: CategoryEntryPopup(self))
         btn.grid(row=0, column=1)
+    
+    def create_file_select_frame_button(self):
+        btn = tk.Button(self.bottom_bar_frame, text="Select File", command=lambda: self.controller.show_frame('file_select'))
+        btn.grid(row=0, column=2)
