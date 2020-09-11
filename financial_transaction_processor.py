@@ -7,6 +7,7 @@ class FinancialTranascationProcessor(Tk):
 
     def __init__(self, filename, *args, **kwargs):
         Tk.__init__(self, *args, **kwargs)
+        self.title("Bank Transaction Processor")
         self.backend = Backend()
 
         self.container = Frame(self)
