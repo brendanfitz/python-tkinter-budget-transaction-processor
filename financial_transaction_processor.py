@@ -5,8 +5,9 @@ from frames.file_select import FileSelectFrame
 
 class FinancialTranascationProcessor(Tk):
 
-    def __init__(self, filename, *args, **kwargs):
+    def __init__(self, testing_mode, *args, **kwargs):
         Tk.__init__(self, *args, **kwargs)
+        self.testing_mode = testing_mode
         self.title("Bank Transaction Processor")
         self.backend = Backend()
 

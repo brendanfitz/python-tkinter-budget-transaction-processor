@@ -7,7 +7,6 @@ class FileSelectFrame(Frame):
     def __init__(self, master, controller):
         Frame.__init__(self, master)
         self.controller = controller
-        self.filepath = None
         self.padding_kwargs = dict(padx=10, pady=10)
         self.font_kwargs = dict(font=("Arial", 10))
 
@@ -18,7 +17,9 @@ class FileSelectFrame(Frame):
         self.select_file_btn.config(height=1, width=15)
         self.select_file_btn.grid(row=1, column=0, **self.padding_kwargs)
 
-        self.file_label = Label(self, text="", **self.font_kwargs)
+        filename_text = "data/sample_data.csv" if self.controller.testing_mode else ""
+        self.filepath = filename_text
+        self.file_label = Label(self, text=filename_text, **self.font_kwargs)
         self.file_label.config(height=2, width=30)
         self.file_label.grid(row=2, column=0, **self.padding_kwargs)
 

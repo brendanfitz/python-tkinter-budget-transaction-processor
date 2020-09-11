@@ -2,15 +2,13 @@ import argparse
 from financial_transaction_processor import FinancialTranascationProcessor
 
 def main(args):
-    if args.test:
-        print("testing mode")
-    app = FinancialTranascationProcessor('sample_data.csv')
+    app = FinancialTranascationProcessor(args.test)
     app.mainloop()
 
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        '--test',
+        '-t', '--test',
         help="test by running with 'data/sample.csv' file",
         action="store_true",
     )
