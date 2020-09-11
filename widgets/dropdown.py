@@ -3,7 +3,7 @@ from tkinter import ttk
 
 class DropDown(ttk.Combobox):
 
-    def __init__(self, master, controller, var, type_):
+    def __init__(self, master, controller, var, type_, width=None):
         self.controller = controller 
         self.var = var
         self.set_values(type_, var)
@@ -13,9 +13,11 @@ class DropDown(ttk.Combobox):
             textvariable=var,
             values=self.values,
         )
+        if width is None:
+            width = self.controller.calc_column_width(type_)
         self.config(
             height=4,
-            width=self.controller.calc_column_width(type_),
+            width=width,
             **self.controller.font_kwargs
         )
 

@@ -1,6 +1,6 @@
-
-from os import path
-from tkinter import Frame, Label, Button, filedialog, BOTH
+from PIL import Image, ImageTk
+from os import path, getcwd
+from tkinter import Frame, Label, Button, PhotoImage, filedialog, BOTH, TOP
 
 class FileSelectFrame(Frame):
 
@@ -11,23 +11,37 @@ class FileSelectFrame(Frame):
         self.font_kwargs = dict(font=("Arial", 10))
         self.pack_kwargs = dict(expand=True, fill=BOTH)
         self.create_title()
-        self.create_file_label()
+        self.create_empty_frame()
         self.create_select_file_btn()
+        self.create_file_label()
 
     def create_title(self):
         title = Label(self, text="Bank Transaction Processor", font=("Arial", 18), )
         title.pack(**self.pack_kwargs)
 
     def create_select_file_btn(self):
+        img_path = path.join(getcwd(), 'img', 'file_open.png')
+        # image = Image.open(img_path).resize((20, 20))
+        # photo = ImageTk.PhotoImage(image)
+        # image = PhotoImage(file=img_path)
+        image = PhotoImage(file=img_path).subsample(4, 4)
         self.select_file_btn_frame = Frame(self)
         self.select_file_btn_frame.pack(**self.pack_kwargs)
         self.select_file_btn = Button(self.select_file_btn_frame,
-            text="Select File",
+            text="Open Transactions",
+            image=image,
+            compound=TOP,
             command=self.file_dialog,
             **self.font_kwargs
         )
-        self.select_file_btn.config(height=1, width=15)
+        self.select_file_btn.photo = image
+        # self.select_file_btn.config(height=1, width=15)
         self.select_file_btn.pack()
+    
+    def create_empty_frame(self):
+        frame = Frame(self)
+        frame.pack(**self.pack_kwargs)
+        Label(frame, text="").pack()
 
     def create_file_label(self):
         filename_text = "data/sample_data.csv" if self.controller.testing_mode else ""
