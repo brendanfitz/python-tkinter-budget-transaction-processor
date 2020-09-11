@@ -1,6 +1,6 @@
 # python-tkinter-financial-transaction-processor
 
-If you need an application to category your bank transaction, look no further!
+If you need an application to categorize your bank account transaction, look no further!
 
 This tool showcases my skills with Tkinter, python's built-in GUI library.
 
