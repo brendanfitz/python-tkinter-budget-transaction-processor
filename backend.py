@@ -1,15 +1,23 @@
-
+from os import path
 import pandas as pd
 
 class Backend(object):
 
     def __init__(self):
-        self.read_data('sample_data.csv')
+        self.datapath = 'data'
+        if not path.isdir('data'):
+            os.mkdir('data')
+
+        self.read_data(path.join(self.datapath, 'sample_data.csv'))
+
+        self.categories_filepath = path.join(self.datapath, 'categories.csv')
         self.categories = self.read_categories()
+
+        self.vendors_filepath = path.join(self.datapath, 'vendors.csv')
         self.vendor_df = self.read_vendor_lookup()
 
-    def read_data(self, filename):
-        df = pd.read_csv(filename)
+    def read_data(self, filepath):
+        df = pd.read_csv(filepath)
         self.columns = df.columns.tolist()
         self.transaction_data = df.to_dict(orient='records')
         self.add_transaction_hash()
@@ -32,9 +40,8 @@ class Backend(object):
         if df.loc[:, 'Transaction ID'].duplicated().any():
             raise ValueError("Duplicates across Transaction Date, Description and Amount dimensions")
     
-    @staticmethod
-    def read_categories():
-        return (pd.read_csv('categories.csv')
+    def read_categories(self):
+        return (pd.read_csv(self.categories_filepath)
             .Category
             .tolist()
         )
@@ -45,9 +52,8 @@ class Backend(object):
         if not category_row.empty:
             return category_row.values[0]
 
-    @staticmethod
-    def read_vendor_lookup():
-        return (pd.read_csv('vendor_lookup.csv')
+    def read_vendor_lookup(self):
+        return (pd.read_csv(self.vendors_filepath)
             .sort_values(['Vendor', 'Category'])
         )
     
@@ -64,8 +70,9 @@ class Backend(object):
             del transaction['vendor_dropdown']
             del transaction['vendor_var']
         
+        filepath = path.join(self.datapath, 'sample_data_processed.csv')
         (pd.DataFrame(self.transaction_data)
-            .to_csv('sample_data_processed.csv', index=False)
+            .to_csv(filepath, index=False)
         )
     
     def add_vendor(self, vendor, category):
@@ -78,7 +85,7 @@ class Backend(object):
             columns=self.vendor_df.columns
         )
         self.vendor_df = self.vendor_df.append(new_row)
-        self.vendor_df.to_csv('vendor_lookup.csv', index=False)
+        self.vendor_df.to_csv(self.vendors_filepath, index=False)
     
     def add_category(self, category):
         if category in self.categories:
@@ -88,6 +95,6 @@ class Backend(object):
 
     def write_categories(self):
         (pd.DataFrame(self.categories, columns=['Category'])
-            .to_csv('categories.csv', index=False)
+            .to_csv(self.categories_filepath, index=False)
         )
         
