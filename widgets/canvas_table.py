@@ -4,7 +4,7 @@ from widgets.dropdown import DropDown
 class CanvasTable(tk.Canvas):
 
     def __init__(self, master):
-        tk.Canvas.__init__(self, master, width=1250, height=250)
+        tk.Canvas.__init__(self, master, width=1000, height=250)
         self.grid(row=2, column=0)
         self.create_scrolly()
         self.create_table_frame()
