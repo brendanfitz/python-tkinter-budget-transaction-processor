@@ -3,13 +3,13 @@ import pandas as pd
 
 class Backend(object):
 
-    def __init__(self, filename):
-        self.filename = filename
+    def __init__(self):
         self.datapath = 'data'
         if not path.isdir('data'):
             mkdir('data')
 
-        self.read_data(path.join(self.datapath, self.filename))
+        self.transaction_data = None
+        self.columns = None
 
         self.categories_filepath = path.join(self.datapath, 'categories.csv')
         self.categories = self.read_categories()
@@ -18,7 +18,10 @@ class Backend(object):
         self.vendor_df = self.read_vendor_lookup()
 
     def read_data(self, filepath):
-        df = pd.read_csv(filepath)
+        self.filepath = filepath
+        self.path, self.filename = path.split(filepath)
+
+        df = pd.read_csv(self.filepath)
         self.columns = df.columns.tolist()
         self.transaction_data = df.to_dict(orient='records')
         self.add_transaction_hash()

@@ -13,6 +13,8 @@ class HomeFrame(tk.Frame):
 
         self.current_row_gen = lambda c=count(): next(c)
         self.font_kwargs = dict(font=('Arial', 10))
+
+    def create_widgets(self):
         self.create_column_widths_dict()
         self.create_title()
         self.create_top_bar()

@@ -7,7 +7,8 @@ class FinancialTranascationProcessor(Tk):
 
     def __init__(self, filename, *args, **kwargs):
         Tk.__init__(self, *args, **kwargs)
-        self.backend = Backend(filename)
+        self.backend = Backend()
+
         self.container = Frame(self)
         self.container.pack(side="top", fill="both", expand=True)
         self.container.grid_rowconfigure(0, weight=1)
@@ -26,4 +27,5 @@ class FinancialTranascationProcessor(Tk):
             self.home_frame.tkraise()
         elif name == 'file_select':
             self.file_select_frame.tkraise()
-        raise ValueError("name must be either 'home' or 'file_select'")
+        else:
+            raise ValueError("name must be either 'home' or 'file_select'")
