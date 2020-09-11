@@ -14,8 +14,8 @@ class DropDown(ttk.Combobox):
             values=self.values,
         )
         self.config(
-            height=2,
-            width=max([len(x) for x in self.values]),
+            height=4,
+            width=self.controller.calc_column_width(type_),
             **self.controller.font_kwargs
         )
 

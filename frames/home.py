@@ -30,20 +30,20 @@ class HomeFrame(tk.Frame):
         self.title = tk.Label(
             self,
             text="Financial Transaction Processor",
-            font=("Arial", 18)
+            font=("Arial", 18),
         )
         self.title.grid(row=0, column=0, columnspan=2)
 
     def create_top_bar(self):
-        columns = ['Transaction ID','Transaction Date','Description','Amount']
+        columns = ['Transaction Date','Description','Amount']
         self.top_bar = tk.Frame(self)
-        self.top_bar.grid(row=1, column=0, sticky='W')
+        self.top_bar.grid(row=1, column=0)
+        self.top_bar.grid_columnconfigure(0, weight=10)
         for c, column in enumerate(columns + ['Vendor', 'Category']):
             width = self.calc_column_width(column)
             if column in ['Vendor', 'Category']:
-                width += 4
-
-            fmt_kwargs = dict(width=width, borderwidth=2, **self.font_kwargs)
+                width -= 1
+            fmt_kwargs = dict(width=width, fg="white", background="dark slate gray", bd=1, relief="groove", **self.font_kwargs)
             label = tk.Label(self.top_bar, text=column, **fmt_kwargs)
             label.grid(row=0, column=c)
 
@@ -56,6 +56,8 @@ class HomeFrame(tk.Frame):
         elif column == 'Vendor':
             vendors = self.backend.vendor_df.Vendor.unique().tolist()
             return max([len(x) for x in vendors + ['Vendor']])
+        elif column == 'Description':
+            return 65
         return self.column_widths[column]
     
     def create_column_widths_dict(self):
