@@ -1,6 +1,6 @@
 
 from os import path
-from tkinter import Frame, Label, Button, filedialog
+from tkinter import Frame, Label, Button, filedialog, BOTH
 
 class FileSelectFrame(Frame):
 
@@ -9,23 +9,46 @@ class FileSelectFrame(Frame):
         self.controller = controller
         self.padding_kwargs = dict(padx=10, pady=10)
         self.font_kwargs = dict(font=("Arial", 10))
+        self.pack_kwargs = dict(expand=True, fill=BOTH)
+        self.create_title()
+        self.create_select_file_btn()
+        self.create_file_label()
+        self.create_submit_btn()
 
-        title = Label(self, text="Bank Transaction Processor", font=("Arial", 18))
-        title.grid(row=0, column=0, **self.padding_kwargs)
+    def create_title(self):
+        title = Label(self, text="Bank Transaction Processor", font=("Arial", 18), )
+        # title.grid(row=0, column=0, columnspan=2, sticky='EW', **self.padding_kwargs)
+        title.pack(**self.pack_kwargs)
 
-        self.select_file_btn = Button(self, text="Select File", command=self.file_dialog, **self.font_kwargs)
+    def create_select_file_btn(self):
+        self.select_file_btn_frame = Frame(self)
+        self.select_file_btn_frame.pack(**self.pack_kwargs)
+        self.select_file_btn = Button(self.select_file_btn_frame,
+            text="Select File",
+            command=self.file_dialog,
+            **self.font_kwargs
+        )
         self.select_file_btn.config(height=1, width=15)
-        self.select_file_btn.grid(row=1, column=0, **self.padding_kwargs)
+        # self.select_file_btn.grid(row=1, column=0, sticky='EW', **self.padding_kwargs)
+        self.select_file_btn.pack()
 
+    def create_file_label(self):
         filename_text = "data/sample_data.csv" if self.controller.testing_mode else ""
         self.filepath = filename_text
-        self.file_label = Label(self, text=filename_text, **self.font_kwargs)
+        self.file_label_frame = Frame(self)
+        self.file_label_frame.pack(**self.pack_kwargs)
+        self.file_label = Label(self.file_label_frame, text=filename_text, **self.font_kwargs)
         self.file_label.config(height=2, width=30)
-        self.file_label.grid(row=2, column=0, **self.padding_kwargs)
+        # self.file_label.grid(row=2, column=0, sticky='EW', **self.padding_kwargs)
+        self.file_label.pack()
 
-        self.submit_btn = Button(self, text="Submit", command=self.submit, **self.font_kwargs)
+    def create_submit_btn(self):
+        self.submit_btn_frame = Frame(self)
+        self.submit_btn_frame.pack(**self.pack_kwargs)
+        self.submit_btn = Button(self.submit_btn_frame, text="Submit", command=self.submit, **self.font_kwargs)
         self.submit_btn.config(height=1, width=15)
-        self.submit_btn.grid(row=3, column=0, **self.padding_kwargs)
+        # self.submit_btn.grid(row=3, column=0, sticky='EW', **self.padding_kwargs)
+        self.submit_btn.pack()
 
     def file_dialog(self):
         self.filepath = filedialog.askopenfilename(

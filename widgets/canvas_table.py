@@ -5,14 +5,14 @@ class CanvasTable(tk.Canvas):
 
     def __init__(self, master):
         tk.Canvas.__init__(self, master, width=1150, height=250, background='white')
-        self.grid(row=2, column=0)
+        self.grid(row=3, column=0)
         self.create_scrolly()
         self.create_table_frame()
         self.create_table()
 
     def create_scrolly(self):
         self.scrolly = tk.Scrollbar(self.master, orient="vertical", command=self.yview)
-        self.scrolly.grid(row=2, column=1, rowspan=1, sticky='ns')
+        self.scrolly.grid(row=3, column=1, rowspan=1, sticky='ns')
     
     def create_table_frame(self):
         self.table_frame = tk.Frame(self, background="white")

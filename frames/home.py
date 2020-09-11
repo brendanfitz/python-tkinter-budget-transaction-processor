@@ -21,23 +21,21 @@ class HomeFrame(tk.Frame):
         self.create_top_bar()
         self.create_canvas()
         self.create_submit_button()
-        self.create_bottom_bar()
-        self.create_add_vendor_button()
-        self.create_add_category_button()
-        self.create_file_select_frame_button()
+        self.create_navbar()
 
     def create_title(self):
         self.title = tk.Label(
             self,
             text="Financial Transaction Processor",
             font=("Arial", 18),
+            pady=15
         )
-        self.title.grid(row=0, column=0, columnspan=2)
+        self.title.grid(row=1, column=0, columnspan=2)
 
     def create_top_bar(self):
         columns = ['Transaction Date','Description','Amount']
         self.top_bar = tk.Frame(self)
-        self.top_bar.grid(row=1, column=0)
+        self.top_bar.grid(row=2, column=0)
         self.top_bar.grid_columnconfigure(0, weight=10)
         for c, column in enumerate(columns + ['Vendor', 'Category']):
             width = self.calc_column_width(column)
@@ -75,24 +73,36 @@ class HomeFrame(tk.Frame):
 
     def create_submit_button(self):
         btn = tk.Button(self, text="Submit", command=self.submit)
-        btn.grid(row=3, column=0)
+        btn.grid(row=4, column=0)
     
     def submit(self):
         self.backend.process_button_variables()
         self.controller.destroy()
     
-    def create_bottom_bar(self):
-        self.bottom_bar_frame = tk.Frame(self)
-        self.bottom_bar_frame.grid(row=4, column=0)
-    
-    def create_add_vendor_button(self):
-        btn = tk.Button(self.bottom_bar_frame, text="Add Vendor", command=lambda: VendorEntryPopup(self))
-        btn.grid(row=0, column=0)
-    
-    def create_add_category_button(self):
-        btn = tk.Button(self.bottom_bar_frame, text="Add Category", command=lambda: CategoryEntryPopup(self))
-        btn.grid(row=0, column=1)
-    
-    def create_file_select_frame_button(self):
-        btn = tk.Button(self.bottom_bar_frame, text="Select File", command=lambda: self.controller.show_frame('file_select'))
-        btn.grid(row=0, column=2)
+    def create_navbar(self):
+        self.navbar = tk.Frame(
+            self,
+            bd=2,
+            relief="groove",
+        )
+        self.navbar.grid(row=0, column=0, columnspan=2, sticky='NSEW')
+
+        self.menu = tk.Menu(self.navbar)
+        self.controller.config(menu=self.menu)
+
+        self.file_menu = tk.Menu(self.menu, tearoff=0)
+
+        self.file_menu.add_command(
+            label="Select File Screen",
+            command=lambda: self.controller.show_frame('file_select')
+        )
+        self.file_menu.add_separator()
+        self.file_menu.add_command(label="Exit", command=lambda: self.controller.destroy())
+
+        self.menu.add_cascade(label="File", menu=self.file_menu)
+
+        self.insert_menu = tk.Menu(self.menu, tearoff=0)
+        self.insert_menu.add_command(label="Vendor", command=lambda: VendorEntryPopup(self))
+        self.insert_menu.add_command(label="Category", command=lambda: CategoryEntryPopup(self))
+
+        self.menu.add_cascade(label="Insert", menu=self.insert_menu)
