@@ -72,7 +72,7 @@ class HomeFrame(tk.Frame):
 
     def create_submit_button(self):
         btn = tk.Button(self, text="Submit", command=self.submit, font=('Arial', 12))
-        btn.grid(row=4, column=0, padx=15, pady=15)
+        btn.grid(row=4, column=0, column_span=2, padx=15, pady=15)
     
     def submit(self):
         self.backend.process_button_variables()
