@@ -9,7 +9,7 @@ class FinancialTranascationProcessor(Tk):
 
     def __init__(self, testing_mode, *args, **kwargs):
         Tk.__init__(self, *args, **kwargs)
-        self.geometry("1175x375")
+        self.geometry("1175x400")
         self.testing_mode = testing_mode
         self.title("Bank Transaction Processor")
         self.backend = Backend()

@@ -21,7 +21,6 @@ class HomeFrame(tk.Frame):
         self.create_top_bar()
         self.create_canvas()
         self.create_submit_button()
-        self.create_navbar()
 
     def create_title(self):
         self.title = tk.Label(
@@ -72,37 +71,10 @@ class HomeFrame(tk.Frame):
         self.column_widths = df.apply(max_of_column_name_or_longest_element)
 
     def create_submit_button(self):
-        btn = tk.Button(self, text="Submit", command=self.submit)
-        btn.grid(row=4, column=0)
+        btn = tk.Button(self, text="Submit", command=self.submit, font=('Arial', 12))
+        btn.grid(row=4, column=0, padx=15, pady=15)
     
     def submit(self):
         self.backend.process_button_variables()
         self.controller.destroy()
     
-    def create_navbar(self):
-        self.navbar = tk.Frame(
-            self,
-            bd=2,
-            relief="groove",
-        )
-        self.navbar.grid(row=0, column=0, columnspan=2, sticky='NSEW')
-
-        self.menu = tk.Menu(self.navbar)
-        self.controller.config(menu=self.menu)
-
-        self.file_menu = tk.Menu(self.menu, tearoff=0)
-
-        self.file_menu.add_command(
-            label="Select File Screen",
-            command=lambda: self.controller.show_frame('file_select')
-        )
-        self.file_menu.add_separator()
-        self.file_menu.add_command(label="Exit", command=lambda: self.controller.destroy())
-
-        self.menu.add_cascade(label="File", menu=self.file_menu)
-
-        self.insert_menu = tk.Menu(self.menu, tearoff=0)
-        self.insert_menu.add_command(label="Vendor", command=lambda: VendorEntryPopup(self))
-        self.insert_menu.add_command(label="Category", command=lambda: CategoryEntryPopup(self))
-
-        self.menu.add_cascade(label="Insert", menu=self.insert_menu)
