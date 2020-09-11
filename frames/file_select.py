@@ -11,9 +11,8 @@ class FileSelectFrame(Frame):
         self.font_kwargs = dict(font=("Arial", 10))
         self.pack_kwargs = dict(expand=True, fill=BOTH)
         self.create_title()
-        self.create_select_file_btn()
         self.create_file_label()
-        self.create_submit_btn()
+        self.create_select_file_btn()
 
     def create_title(self):
         title = Label(self, text="Bank Transaction Processor", font=("Arial", 18), )
@@ -39,13 +38,6 @@ class FileSelectFrame(Frame):
         self.file_label.config(height=2, width=30)
         self.file_label.pack()
 
-    def create_submit_btn(self):
-        self.submit_btn_frame = Frame(self)
-        self.submit_btn_frame.pack(**self.pack_kwargs)
-        self.submit_btn = Button(self.submit_btn_frame, text="Submit", command=self.submit, **self.font_kwargs)
-        self.submit_btn.config(height=1, width=15)
-        self.submit_btn.pack()
-
     def file_dialog(self):
         self.filepath = filedialog.askopenfilename(
             parent=self,
@@ -55,6 +47,7 @@ class FileSelectFrame(Frame):
         )
         _, filename = path.split(self.filepath)
         self.file_label.config(text=filename)
+        self.submit()
     
     def submit(self):
         if self.filepath is not None:
