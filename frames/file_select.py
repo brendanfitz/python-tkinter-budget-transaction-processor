@@ -24,7 +24,7 @@ class FileSelectFrame(Frame):
         self.select_file_btn_frame = Frame(self)
         self.select_file_btn_frame.pack(**self.pack_kwargs)
         self.select_file_btn = Button(self.select_file_btn_frame,
-            text="Open Transactions",
+            text="Load Transactions",
             image=image,
             compound=TOP,
             command=self.file_dialog,
