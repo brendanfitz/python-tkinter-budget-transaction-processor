@@ -29,6 +29,9 @@ class FinancialTranascationProcessor(Tk):
 
         self.file_select_frame.tkraise()
 
+        if self.testing_mode:
+            self.file_select_frame.submit()
+
     def show_frame(self, name):
         if name == 'home':
             self.home_frame.tkraise()
