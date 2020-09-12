@@ -1,4 +1,3 @@
-from PIL import Image, ImageTk
 from os import path, getcwd
 from tkinter import Frame, Label, Button, PhotoImage, filedialog, BOTH, TOP
 
@@ -21,9 +20,6 @@ class FileSelectFrame(Frame):
 
     def create_select_file_btn(self):
         img_path = path.join(getcwd(), 'img', 'file_open.png')
-        # image = Image.open(img_path).resize((20, 20))
-        # photo = ImageTk.PhotoImage(image)
-        # image = PhotoImage(file=img_path)
         image = PhotoImage(file=img_path).subsample(4, 4)
         self.select_file_btn_frame = Frame(self)
         self.select_file_btn_frame.pack(**self.pack_kwargs)
@@ -35,7 +31,6 @@ class FileSelectFrame(Frame):
             **self.font_kwargs
         )
         self.select_file_btn.photo = image
-        # self.select_file_btn.config(height=1, width=15)
         self.select_file_btn.pack()
     
     def create_empty_frame(self):
