@@ -30,8 +30,9 @@ class CategoryEntryPopup(Toplevel):
         else:
             try:
                 self.controller.backend.add_category(category)
-                for transaction in self.controller.backend.transaction_data:
-                    transaction['category_dropdown'].add_category(category)
+                if self.controller.backend.transaction_data:
+                    for transaction in self.controller.backend.transaction_data:
+                        transaction['category_dropdown'].add_category(category)
                 self.destroy()
             except ValueError:
                 messagebox.showerror("Error", "Category Already Exists")
