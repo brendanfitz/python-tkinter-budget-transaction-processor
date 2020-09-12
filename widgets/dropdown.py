@@ -7,18 +7,16 @@ class DropDown(ttk.Combobox):
         self.controller = controller 
         self.var = var
         self.set_values(type_, var)
+        if width is None:
+            width = self.controller.calc_column_width(type_)
         ttk.Combobox.__init__(self, 
             master,
             text="Choose Vendor/Category",
             textvariable=var,
             values=self.values,
-        )
-        if width is None:
-            width = self.controller.calc_column_width(type_)
-        self.config(
             height=4,
             width=width,
-            **self.controller.font_kwargs
+            font=("Arial", 10)
         )
 
     def set_values(self, type_, var):
