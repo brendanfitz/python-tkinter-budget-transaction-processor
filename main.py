@@ -1,8 +1,10 @@
+import time
 import argparse
 from financial_transaction_processor import FinancialTranascationProcessor
 
 def main(args):
     app = FinancialTranascationProcessor(args.test)
+    time.sleep(2)
     app.mainloop()
 
 def parse_args():
