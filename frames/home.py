@@ -1,3 +1,4 @@
+from os import path
 from itertools import count
 import tkinter as tk
 from widgets.canvas_table import CanvasTable
@@ -71,7 +72,17 @@ class HomeFrame(tk.Frame):
         self.column_widths = df.apply(max_of_column_name_or_longest_element)
 
     def create_submit_button(self):
-        btn = tk.Button(self, text="Submit", command=self.submit, font=('Arial', 12))
+        img_path = path.join('img', 'save.png')
+        image = tk.PhotoImage(file=img_path).subsample(5, 5)
+        btn = tk.Button(
+            self,
+            text="Save & Quit",
+            image=image,
+            command=self.submit,
+            compound=tk.TOP,
+            font=('Arial', 8)
+        )
+        btn.photo = image
         btn.grid(row=4, column=0, columnspan=2, padx=15, pady=15)
     
     def submit(self):
