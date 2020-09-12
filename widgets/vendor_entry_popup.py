@@ -10,10 +10,22 @@ class VendorEntryPopup(Toplevel):
         self.title("Add Vendor")
         self.frame = Frame(self)
         self.frame.grid(row=0, column=0, padx=10, pady=10)
-        Label(self.frame, text="Vendor:").grid(row=0, column=0, padx=(0, 50), pady=(15, 5))
+        Label(self.frame, text="Vendor:").grid(
+            row=0,
+            column=0,
+            padx=(0, 50),
+            pady=(15, 5),
+            sticky='NSW',
+        )
         self.vendor_entry = Entry(self.frame, width=50+2, **self.controller.font_kwargs)
         self.vendor_entry.grid(row=0, column=1)
-        Label(self.frame, text="Category:").grid(row=1, column=0, padx=(0, 50), pady=(5, 15))
+        Label(self.frame, text="Category:").grid(
+            row=1,
+            column=0,
+            padx=(0, 50),
+            pady=(5, 15),
+            sticky='NSW',
+        )
         self.category_var = StringVar(self.controller)
         self.category_dropdown = DropDown(self.frame, self.controller, self.category_var, 'Category', width=50)
         self.category_dropdown.grid(row=1, column=1)

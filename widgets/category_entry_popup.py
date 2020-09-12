@@ -10,8 +10,14 @@ class CategoryEntryPopup(Toplevel):
         self.title("Add Category")
         self.frame = Frame(self)
         self.frame.grid(row=0, column=0, padx=10, pady=10)
-        Label(self.frame, text="Category:").grid(row=0, column=0, padx=(0, 50), pady=15)
-        self.category_entry = Entry(self.frame)
+        Label(self.frame, text="Category:").grid(
+            row=0,
+            column=0,
+            padx=(0, 50),
+            pady=(15, 5),
+            sticky='NSW',
+        )
+        self.category_entry = Entry(self.frame, width=50)
         self.category_entry.grid(row=0, column=1, pady=25)
         btn = Button(self.frame, text="Submit", command=self.add_category)
         btn.grid(row=1, column=0, columnspan=2, padx=10, pady=15)

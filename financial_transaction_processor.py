@@ -60,7 +60,7 @@ class FinancialTranascationProcessor(Tk):
         self.menu.add_cascade(label="File", menu=self.file_menu)
 
         self.insert_menu = Menu(self.menu, tearoff=0)
-        self.insert_menu.add_command(label="Vendor", command=lambda: VendorEntryPopup(self.home_frame))
         self.insert_menu.add_command(label="Category", command=lambda: CategoryEntryPopup(self.home_frame))
+        self.insert_menu.add_command(label="Vendor", command=lambda: VendorEntryPopup(self.home_frame))
 
         self.menu.add_cascade(label="Insert", menu=self.insert_menu)
