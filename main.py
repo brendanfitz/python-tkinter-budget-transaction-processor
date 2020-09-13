@@ -2,6 +2,12 @@ import time
 import argparse
 from financial_transaction_processor import FinancialTranascationProcessor
 
+# try:
+    # from ctypes import windll
+    # windll.shcore.SetProcessDpiAwareness(1)
+# except:
+    # pass
+
 def main(args):
     app = FinancialTranascationProcessor(args.test)
     time.sleep(2)
@@ -20,4 +26,3 @@ def parse_args():
 if __name__ == '__main__':
     args = parse_args()
     main(args)
-  
