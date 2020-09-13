@@ -25,14 +25,14 @@ class HomeFrame(tk.Frame):
         self.pack_forget()
         self.create_column_widths_dict()
         self.create_title()
-        self.title.grid(row=1, column=0, columnspan=2)
+        self.title.grid(row=0, column=0, columnspan=2)
         self.create_top_bar()
-        self.top_bar.grid(row=2, column=0)
+        self.top_bar.grid(row=1, column=0)
         self.create_canvas()
-        self.canvas.grid(row=3, column=0)
-        self.canvas.scrolly.grid(row=3, column=1, rowspan=1, sticky='ns')
+        self.canvas.grid(row=2, column=0)
+        self.canvas.scrolly.grid(row=2, column=1, rowspan=1, sticky='ns')
         self.create_submit_button()
-        self.submit_btn.grid(row=4, column=0, columnspan=2, padx=15, pady=15)
+        self.submit_btn.grid(row=3, column=0, columnspan=2, padx=15, pady=15)
 
     def create_title(self):
         self.title = tk.Label(
