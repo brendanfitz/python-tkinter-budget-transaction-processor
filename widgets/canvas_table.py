@@ -44,6 +44,7 @@ class CanvasTable(tk.Canvas):
                     relief="groove",
                     background="white",
                     highlightbackground="blue",
+                    anchor=self.master.column_alignments[column],
                     **self.master.font_kwargs
                 )
                 label.grid(row=0, column=c)

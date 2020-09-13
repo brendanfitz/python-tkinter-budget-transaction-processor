@@ -11,9 +11,15 @@ class HomeFrame(tk.Frame):
         tk.Frame.__init__(self, master)
         self.controller = controller
         self.backend = self.controller.backend
-
         self.current_row_gen = lambda c=count(): next(c)
         self.font_kwargs = dict(font=('Arial', 10))
+        self.column_alignments = {
+            'Transaction Date': tk.W,
+            'Description': tk.W,
+            'Amount': tk.E,
+            'Vendor': tk.W,
+            'Category': tk.W, 
+        }
 
     def create_widgets(self):
         self.pack_forget()
@@ -41,7 +47,15 @@ class HomeFrame(tk.Frame):
             width = self.calc_column_width(column)
             if column in ['Vendor', 'Category']:
                 width -= 1
-            fmt_kwargs = dict(width=width, fg="white", background="dark slate gray", bd=1, relief="groove", **self.font_kwargs)
+            fmt_kwargs = dict(
+                width=width,
+                fg="white",
+                background="dark slate gray",
+                bd=1,
+                relief="groove",
+                anchor=self.column_alignments[column],
+                **self.font_kwargs
+            )
             label = tk.Label(self.top_bar, text=column, **fmt_kwargs)
             label.grid(row=0, column=c)
 
