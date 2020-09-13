@@ -24,28 +24,29 @@ class HomeFrame(tk.Frame):
     def create_widgets(self):
         self.pack_forget()
         self.create_column_widths_dict()
-        self.create_title()
+        self.title = self.create_title()
         self.title.grid(row=0, column=0, columnspan=2)
-        self.create_top_bar()
+        self.top_bar = self.create_top_bar()
         self.top_bar.grid(row=1, column=0)
-        self.create_canvas()
+        self.canvas = self.create_canvas()
         self.canvas.grid(row=2, column=0)
         self.canvas.scrolly.grid(row=2, column=1, rowspan=1, sticky='ns')
-        self.create_submit_button()
+        self.submit_btn = self.create_submit_button()
         self.submit_btn.grid(row=3, column=0, columnspan=2, padx=15, pady=15)
 
     def create_title(self):
-        self.title = tk.Label(
+        title = tk.Label(
             self,
             text="Financial Transaction Processor",
             font=("Arial", 18),
             pady=15
         )
+        return title
 
     def create_top_bar(self):
         columns = ['Transaction Date','Description','Amount']
-        self.top_bar = tk.Frame(self)
-        self.top_bar.grid_columnconfigure(0, weight=10)
+        top_bar = tk.Frame(self)
+        top_bar.grid_columnconfigure(0, weight=10)
         for c, column in enumerate(columns + ['Vendor', 'Category']):
             width = self.calc_column_width(column)
             if column in ['Vendor', 'Category']:
@@ -59,11 +60,12 @@ class HomeFrame(tk.Frame):
                 anchor=self.column_alignments[column],
                 **self.font_kwargs
             )
-            label = tk.Label(self.top_bar, text=column, **fmt_kwargs)
+            label = tk.Label(top_bar, text=column, **fmt_kwargs)
             label.grid(row=0, column=c)
+        return top_bar
 
     def create_canvas(self):
-        self.canvas = CanvasTable(self)
+        return CanvasTable(self)
 
     def calc_column_width(self, column):
         if column == 'Category':
@@ -91,7 +93,7 @@ class HomeFrame(tk.Frame):
     def create_submit_button(self):
         img_path = path.join('img', 'save.png')
         image = tk.PhotoImage(file=img_path).subsample(5, 5)
-        self.submit_btn = tk.Button(
+        submit_btn = tk.Button(
             self,
             text="Save & Quit",
             image=image,
@@ -99,7 +101,8 @@ class HomeFrame(tk.Frame):
             compound=tk.TOP,
             font=('Arial', 8)
         )
-        self.submit_btn.photo = image
+        submit_btn.photo = image
+        return submit_btn
     
     def submit(self):
         self.backend.process_button_variables()
