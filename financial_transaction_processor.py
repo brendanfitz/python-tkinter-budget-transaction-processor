@@ -42,14 +42,7 @@ class FinancialTranascationProcessor(Tk):
             raise ValueError("name must be either 'home' or 'file_select'")
 
     def create_menubar(self):
-        self.navbar = Frame(
-            self.container,
-            bd=2,
-            relief="groove",
-        )
-        self.navbar.grid(row=0, column=0, columnspan=2, sticky='NSEW')
-
-        self.menu = Menu(self.navbar)
+        self.menu = Menu(self)
         self.config(menu=self.menu)
 
         self.file_menu = Menu(self.menu, tearoff=0)
