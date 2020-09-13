@@ -25,9 +25,14 @@ class HomeFrame(tk.Frame):
         self.pack_forget()
         self.create_column_widths_dict()
         self.create_title()
+        self.title.grid(row=1, column=0, columnspan=2)
         self.create_top_bar()
+        self.top_bar.grid(row=2, column=0)
         self.create_canvas()
+        self.canvas.grid(row=3, column=0)
+        self.canvas.scrolly.grid(row=3, column=1, rowspan=1, sticky='ns')
         self.create_submit_button()
+        self.submit_btn.grid(row=4, column=0, columnspan=2, padx=15, pady=15)
 
     def create_title(self):
         self.title = tk.Label(
@@ -36,12 +41,10 @@ class HomeFrame(tk.Frame):
             font=("Arial", 18),
             pady=15
         )
-        self.title.grid(row=1, column=0, columnspan=2)
 
     def create_top_bar(self):
         columns = ['Transaction Date','Description','Amount']
         self.top_bar = tk.Frame(self)
-        self.top_bar.grid(row=2, column=0)
         self.top_bar.grid_columnconfigure(0, weight=10)
         for c, column in enumerate(columns + ['Vendor', 'Category']):
             width = self.calc_column_width(column)
@@ -60,7 +63,7 @@ class HomeFrame(tk.Frame):
             label.grid(row=0, column=c)
 
     def create_canvas(self):
-        self.Canvas = CanvasTable(self)
+        self.canvas = CanvasTable(self)
 
     def calc_column_width(self, column):
         if column == 'Category':
@@ -88,7 +91,7 @@ class HomeFrame(tk.Frame):
     def create_submit_button(self):
         img_path = path.join('img', 'save.png')
         image = tk.PhotoImage(file=img_path).subsample(5, 5)
-        btn = tk.Button(
+        self.submit_btn = tk.Button(
             self,
             text="Save & Quit",
             image=image,
@@ -96,8 +99,7 @@ class HomeFrame(tk.Frame):
             compound=tk.TOP,
             font=('Arial', 8)
         )
-        btn.photo = image
-        btn.grid(row=4, column=0, columnspan=2, padx=15, pady=15)
+        self.submit_btn.photo = image
     
     def submit(self):
         self.backend.process_button_variables()
