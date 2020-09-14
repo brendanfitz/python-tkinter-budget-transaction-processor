@@ -24,13 +24,19 @@ class HomeFrame(tk.Frame):
     def create_widgets(self):
         self.pack_forget()
         self.create_column_widths_dict()
+
         self.title = self.create_title()
         self.title.grid(row=0, column=0, columnspan=2)
+
         self.top_bar = self.create_top_bar()
         self.top_bar.grid(row=1, column=0)
+
         self.canvas = self.create_canvas()
         self.canvas.grid(row=2, column=0)
-        self.canvas.scrolly.grid(row=2, column=1, rowspan=1, sticky='ns')
+
+        self.scrolly = self.canvas.create_scrolly()
+        self.scrolly.grid(row=2, column=1, rowspan=1, sticky='ns')
+
         self.submit_btn = self.create_submit_button()
         self.submit_btn.grid(row=3, column=0, columnspan=2, padx=15, pady=15)
 
