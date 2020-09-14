@@ -2,18 +2,20 @@ import tkinter as tk
 from widgets.dropdown import DropDown
 
 class CanvasTable(tk.Canvas):
+    COLUMN_ALIGNMENTS = {
+        'Transaction Date': tk.W,
+        'Description': tk.W,
+        'Amount': tk.E,
+        'Vendor': tk.W,
+        'Category': tk.W, 
+    }
+    FONT_KWARGS = dict(font=('Arial', 10))
 
     def __init__(self, master):
         tk.Canvas.__init__(self, master, width=1150, height=250, background='white')
         self.create_table_frame()
-        self.create_scrolly()
         self.create_table()
 
-    def create_scrolly(self):
-        scrolly = tk.Scrollbar(self.master, orient="vertical", command=self.yview)
-        self.configure(yscrollcommand=scrolly.set)
-        return scrolly
-    
     def create_table_frame(self):
         self.table_frame = tk.Frame(self, background="white")
         self.table_frame.grid(row=0, column=0, sticky="EW")
@@ -43,8 +45,8 @@ class CanvasTable(tk.Canvas):
                     relief="groove",
                     background="white",
                     highlightbackground="blue",
-                    anchor=self.master.column_alignments[column],
-                    **self.master.font_kwargs
+                    anchor=CanvasTable.COLUMN_ALIGNMENTS[column],
+                    **CanvasTable.FONT_KWARGS
                 )
                 label.grid(row=0, column=c)
         

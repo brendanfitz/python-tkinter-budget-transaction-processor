@@ -1,7 +1,7 @@
 from os import path
 from itertools import count
 import tkinter as tk
-from widgets.canvas_table import CanvasTable
+from widgets.table_frame import TableFrame
 from widgets.vendor_entry_popup import VendorEntryPopup
 from widgets.category_entry_popup import CategoryEntryPopup 
 
@@ -12,30 +12,15 @@ class HomeFrame(tk.Frame):
         self.controller = controller
         self.backend = self.controller.backend
         self.current_row_gen = lambda c=count(): next(c)
-        self.font_kwargs = dict(font=('Arial', 10))
-        self.column_alignments = {
-            'Transaction Date': tk.W,
-            'Description': tk.W,
-            'Amount': tk.E,
-            'Vendor': tk.W,
-            'Category': tk.W, 
-        }
 
     def create_widgets(self):
         self.pack_forget()
-        self.create_column_widths_dict()
 
         self.title = self.create_title()
-        self.title.grid(row=0, column=0, columnspan=2)
+        self.title.grid(row=0, column=0)
 
-        self.top_bar = self.create_top_bar()
-        self.top_bar.grid(row=1, column=0)
-
-        self.canvas = self.create_canvas()
-        self.canvas.grid(row=2, column=0)
-
-        self.scrolly = self.canvas.create_scrolly()
-        self.scrolly.grid(row=2, column=1, rowspan=1, sticky='ns')
+        self.table_frame = TableFrame(self, self.backend)
+        self.table_frame.grid(row=1, column=0, padx=25, sticky='EW')
 
         self.submit_btn = self.create_submit_button()
         self.submit_btn.grid(row=3, column=0, columnspan=2, padx=15, pady=15)
@@ -48,53 +33,6 @@ class HomeFrame(tk.Frame):
             pady=15
         )
         return title
-
-    def create_top_bar(self):
-        columns = ['Transaction Date','Description','Amount']
-        top_bar = tk.Frame(self)
-        top_bar.grid_columnconfigure(0, weight=10)
-        for c, column in enumerate(columns + ['Vendor', 'Category']):
-            width = self.calc_column_width(column)
-            if column in ['Vendor', 'Category']:
-                width -= 1
-            fmt_kwargs = dict(
-                width=width,
-                fg="white",
-                background="dark slate gray",
-                bd=1,
-                relief="groove",
-                anchor=self.column_alignments[column],
-                **self.font_kwargs
-            )
-            label = tk.Label(top_bar, text=column, **fmt_kwargs)
-            label.grid(row=0, column=c)
-        return top_bar
-
-    def create_canvas(self):
-        return CanvasTable(self)
-
-    def calc_column_width(self, column):
-        if column == 'Category':
-            return max([len(x) for x in self.backend.categories + ['Category']])
-        elif column == 'Vendor':
-            vendors = self.backend.vendor_df.Vendor.unique().tolist()
-            return max([len(x) for x in vendors + ['Vendor']])
-        elif column == 'Description':
-            return 65
-        return self.column_widths[column]
-    
-    def create_column_widths_dict(self):
-        df = self.backend.transaction_data_to_df()
-
-        def max_of_column_name_or_longest_element(x):
-            """
-            computes the max of either:
-                the column name length
-                the length of largest string in the column
-            """
-            return max(len(x.name), x.astype(str).str.len().max())
-
-        self.column_widths = df.apply(max_of_column_name_or_longest_element)
 
     def create_submit_button(self):
         img_path = path.join('img', 'save.png')
