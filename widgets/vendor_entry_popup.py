@@ -17,7 +17,7 @@ class VendorEntryPopup(Toplevel):
             pady=(15, 5),
             sticky='NSW',
         )
-        self.vendor_entry = Entry(self.frame, width=50+2, **self.controller.font_kwargs)
+        self.vendor_entry = Entry(self.frame, width=50+2, font=('Arial', 10))
         self.vendor_entry.grid(row=0, column=1)
         Label(self.frame, text="Category:").grid(
             row=1,
@@ -40,6 +40,7 @@ class VendorEntryPopup(Toplevel):
             messagebox.showerror('Error', 'No vendor provided')
         elif category == '':
             messagebox.showerror('Error', 'No category provided')
+
         else:
             try:
                 self.controller.backend.add_vendor(vendor, category)

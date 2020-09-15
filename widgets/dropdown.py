@@ -14,10 +14,9 @@ class DropDown(ttk.Combobox):
             text="Choose Vendor/Category",
             textvariable=var,
             values=self.values,
-            height=4,
-            width=width,
-            font=("Arial", 10)
+            font=("Arial", 10),
         )
+        self.config(width=width)
 
     def set_values(self, type_, var):
         if type_ == 'Vendor':
