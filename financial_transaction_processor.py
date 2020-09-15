@@ -1,4 +1,4 @@
-from tkinter import Tk, Frame, Menu
+from tkinter import Tk, ttk, Frame, Menu
 from backend import Backend
 from frames.home import HomeFrame
 from frames.file_select import FileSelectFrame
@@ -9,8 +9,21 @@ class FinancialTranascationProcessor(Tk):
 
     def __init__(self, testing_mode, *args, **kwargs):
         Tk.__init__(self, *args, **kwargs)
-        self.geometry("1225x425")
+        self.geometry("1800x525")
         self.resizable(False, False)
+        style = ttk.Style(self)
+
+        style.configure(
+            'TCombobox',
+            font=('Arial', 10),
+            borderwidth=1,
+            bordercolor='black',
+            relief='solid',
+        )
+
+        style.configure('TCombobox.textarea', font=('Arial', 10))
+        style.configure('TCombobox.border', relief='solid')
+
         self.testing_mode = testing_mode
         self.title("Bank Transaction Processor")
         self.backend = Backend()

@@ -12,14 +12,21 @@ class CanvasTable(tk.Canvas):
     FONT_KWARGS = dict(font=('Arial', 10))
 
     def __init__(self, master):
-        tk.Canvas.__init__(self, master, width=1150, height=250, background='white')
+        tk.Canvas.__init__(self, 
+            master,
+            # width=1180,
+            width=1666,
+            height=315,
+            background='purple',
+            bd=0,
+            highlightthickness=0,
+        )
         self.create_table_frame()
         self.create_table()
 
     def create_table_frame(self):
-        self.table_frame = tk.Frame(self, background="white")
-        self.table_frame.grid(row=0, column=0, sticky="EW")
-        self.table_frame.grid_columnconfigure(0, weight=1)
+        self.table_frame = tk.Frame(self, background="gray")
+        self.table_frame.grid(row=0, column=0, sticky="w")
         self.table_frame.bind(
             "<Configure>",
             lambda e: self.configure(
@@ -33,7 +40,7 @@ class CanvasTable(tk.Canvas):
         
         for r, transaction in enumerate(self.master.backend.transaction_data):
             table_row = tk.Frame(self.table_frame, background="white")
-            table_row.grid(row=r, column=0, sticky="EW")
+            table_row.grid(row=r, column=0, sticky="w")
             for c, column in enumerate(columns):
                 width = self.master.calc_column_width(column)
                 label = tk.Label(
@@ -42,13 +49,15 @@ class CanvasTable(tk.Canvas):
                     width=width,
                     height=1,
                     bd=1,
-                    relief="groove",
+                    relief="solid",
                     background="white",
                     highlightbackground="blue",
+                    padx=2,
                     anchor=CanvasTable.COLUMN_ALIGNMENTS[column],
                     **CanvasTable.FONT_KWARGS
                 )
-                label.grid(row=0, column=c)
+                # label.config(highlightbackground="gray", highlightcolor= "gray")
+                label.grid(row=0, column=c, sticky='ns')
         
             trans_id = transaction['Transaction ID']
         

@@ -17,31 +17,32 @@ class TableFrame(tk.Frame):
         self.backend = backend
         self.column_widths = self.create_column_widths_dict()
         self.top_bar = self.create_top_bar()
-        self.top_bar.grid(row=0, column=0)
+        self.top_bar.grid(row=0, column=0, sticky='nsw')
         self.canvas = CanvasTable(self)
-        self.canvas.grid(row=1, column=0)
+        self.canvas.grid(row=1, column=0, sticky='nsw')
         self.scrolly = self.create_scrolly()
-        self.scrolly.grid(row=1, column=1, rowspan=1, sticky='ns')
+        self.scrolly.grid(row=1, column=1, rowspan=1, sticky='nsw')
     
     def create_top_bar(self):
         columns = ['Transaction Date', 'Description', 'Amount']
-        top_bar = tk.Frame(self)
-        top_bar.grid_columnconfigure(0, weight=10)
+        top_bar = tk.Frame(self, background='dark slate gray')
         for c, column in enumerate(columns + ['Vendor', 'Category']):
             width = self.calc_column_width(column)
-            if column in ['Vendor', 'Category']:
-                width -= 1
+            grid_pad = dict()
             fmt_kwargs = dict(
                 width=width,
                 fg="white",
                 background="dark slate gray",
                 bd=1,
-                relief="groove",
+                relief="solid",
+                padx=2,
                 anchor=TableFrame.COLUMN_ALIGNMENTS[column],
                 **TableFrame.FONT_KWARGS
             )
+            if column in ['Vendor', 'Category']:
+                grid_pad['padx'] = (0, 26) # padding for dropdown arrow
             label = tk.Label(top_bar, text=column, **fmt_kwargs)
-            label.grid(row=0, column=c)
+            label.grid(row=0, column=c, sticky='ns', **grid_pad)
         return top_bar
 
     def calc_column_width(self, column):
@@ -71,7 +72,7 @@ class TableFrame(tk.Frame):
         scrolly = tk.Scrollbar(
             self,
             orient="vertical",
-            command=self.canvas.yview
+            command=self.canvas.yview,
         )
         self.canvas.configure(yscrollcommand=scrolly.set)
         return scrolly
