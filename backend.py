@@ -1,5 +1,6 @@
 from os import path, mkdir
 import pandas as pd
+import hashlib
 
 class Backend(object):
 
@@ -28,16 +29,17 @@ class Backend(object):
     
     def add_transaction_hash(self):
         for transaction in self.transaction_data:
-            transaction_hash = hash(
-                (
-                    transaction['Transaction Date'],
-                    transaction['Description'],
-                    transaction['Amount'],
-                )
+            rowstring = (
+                transaction['Transaction Date']
+                + transaction['Description']
+                + str(transaction['Amount'])
             )
+            transaction_hash = hashlib.md5(rowstring.encode()).hexdigest()
             transaction['Transaction ID'] = transaction_hash
         self.columns.insert(0, 'Transaction ID')
         self.check_hash_uniqueness()
+    
+    def add_filename_id(self):
     
     def check_hash_uniqueness(self):
         df = self.transaction_data_to_df()
