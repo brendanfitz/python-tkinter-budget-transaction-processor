@@ -70,13 +70,13 @@ class CanvasTable(tk.Canvas):
             transaction['category_var'] = var
 
     def create_category_dropdown(self, table_row, c, trans_id):
-        var = tk.StringVar(self.master, name="category_"+str(trans_id))
+        var = tk.StringVar(self.master, name="category_"+trans_id)
         dropdown = DropDown(table_row, self.master, var, 'Category')
         dropdown.grid(row=0, column=c+2)
         return var, dropdown
     
     def create_vendor_dropdown(self, table_row, c, trans_id):
-        var = tk.StringVar(self.master, name="vendor_"+str(trans_id))
+        var = tk.StringVar(self.master, name="vendor_"+trans_id)
         dropdown = DropDown(table_row, self.master, var, 'Vendor')
         var.trace('w', dropdown.vendor_change_callback)
         dropdown.grid(row=0, column=c+1)
