@@ -28,7 +28,7 @@ class Backend(object):
         self.add_transaction_hash()
     
     def add_transaction_hash(self):
-        for transaction in self.transaction_data:
+        for row_num, transaction in enumerate(self.transaction_data):
             rowstring = (
                 transaction['Transaction Date']
                 + transaction['Description']
@@ -36,10 +36,9 @@ class Backend(object):
             )
             transaction_hash = hashlib.md5(rowstring.encode()).hexdigest()
             transaction['Transaction ID'] = transaction_hash
+            transaction['File ID'] = self.filename + '__' + str(row_num+1)
         self.columns.insert(0, 'Transaction ID')
         self.check_hash_uniqueness()
-    
-    def add_filename_id(self):
     
     def check_hash_uniqueness(self):
         df = self.transaction_data_to_df()
@@ -68,11 +67,11 @@ class Backend(object):
     
     def process_button_variables(self):
         for transaction in self.transaction_data:
-            transaction['category'] = transaction['category_var'].get()
+            transaction['Category'] = transaction['category_var'].get()
             del transaction['category_dropdown']
             del transaction['category_var']
 
-            transaction['vendor'] = transaction['vendor_var'].get()
+            transaction['Vendor'] = transaction['vendor_var'].get()
             del transaction['vendor_dropdown']
             del transaction['vendor_var']
         
@@ -108,6 +107,19 @@ class Backend(object):
         root, ext= path.splitext(self.filename)
         filename = root + '_processed' + ext 
         filepath = path.join(self.datapath, filename)
+        columns = [
+            'Transaction ID', 
+            'File ID',
+            'Transaction Date',
+            'Post Date',
+            'Description',
+            'Category (Chase)',
+            'Type',
+            'Amount',
+            'Category',
+            'Vendor'
+        ]
         (pd.DataFrame(self.transaction_data)
+            .reindex(columns=columns)
             .to_csv(filepath, index=False)
         )
