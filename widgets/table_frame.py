@@ -27,10 +27,9 @@ class TableFrame(tk.Frame):
         columns = ['Transaction Date', 'Description', 'Amount']
         top_bar = tk.Frame(self, background='dark slate gray')
         for c, column in enumerate(columns + ['Vendor', 'Category']):
-            width = self.calc_column_width(column)
             grid_pad = dict()
             fmt_kwargs = dict(
-                width=width,
+                width=CanvasTable.COLUMN_WIDTHS[column],
                 fg="white",
                 background="dark slate gray",
                 bd=1,
