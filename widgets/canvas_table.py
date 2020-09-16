@@ -48,9 +48,12 @@ class CanvasTable(tk.Canvas):
             table_row = tk.Frame(self.table_frame, background="white")
             table_row.grid(row=r, column=0, sticky="w")
             for c, column in enumerate(columns):
+                text = transaction[column]
+                if column == 'Description' and len(text) > 64:
+                    text = text[:(82-3)] + '...' 
                 label = tk.Label(
                     table_row,
-                    text=transaction[column],
+                    text=text,
                     width=CanvasTable.COLUMN_WIDTHS[column],
                     height=1,
                     bd=1,

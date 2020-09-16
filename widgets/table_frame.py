@@ -15,7 +15,6 @@ class TableFrame(tk.Frame):
     def __init__(self, master, backend):
         tk.Frame.__init__(self, master)
         self.backend = backend
-        self.column_widths = self.create_column_widths_dict()
         self.top_bar = self.create_top_bar()
         self.top_bar.grid(row=0, column=0, sticky='nsw')
         self.canvas = CanvasTable(self)
@@ -43,29 +42,6 @@ class TableFrame(tk.Frame):
             label = tk.Label(top_bar, text=column, **fmt_kwargs)
             label.grid(row=0, column=c, sticky='ns', **grid_pad)
         return top_bar
-
-    def calc_column_width(self, column):
-        if column == 'Category':
-            return max([len(x) for x in self.backend.categories + ['Category']])
-        elif column == 'Vendor':
-            vendors = self.backend.vendor_df.Vendor.unique().tolist()
-            return max([len(x) for x in vendors + ['Vendor']])
-        elif column == 'Description':
-            return 65
-        return self.column_widths[column]
-    
-    def create_column_widths_dict(self):
-        df = self.backend.transaction_data_to_df()
-
-        def max_of_column_name_or_longest_element(x):
-            """
-            computes the max of either:
-                the column name length
-                the length of largest string in the column
-            """
-            return max(len(x.name), x.astype(str).str.len().max())
-
-        return df.apply(max_of_column_name_or_longest_element)
 
     def create_scrolly(self):
         scrolly = tk.Scrollbar(
