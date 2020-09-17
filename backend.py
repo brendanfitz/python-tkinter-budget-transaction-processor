@@ -124,3 +124,11 @@ class Backend(object):
             .reindex(columns=columns)
             .to_csv(filepath, index=False)
         )
+    
+    def unique_vendor_list(self):
+        return (self.vendor_df
+            .Vendor
+            .sort_values()
+            .unique()
+            .tolist()
+        )

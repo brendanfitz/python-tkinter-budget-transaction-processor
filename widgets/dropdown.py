@@ -26,10 +26,7 @@ class DropDown(ttk.Combobox):
 
     def set_values(self, type_, var):
         if type_ == 'Vendor':
-            self.values = (self.controller.backend.vendor_df.Vendor
-                .unique()
-                .tolist()
-            )
+            self.values = self.controller.backend.unique_vendor_list()
             var.trace('w', self.vendor_change_callback)
         elif type_ == 'Category':
             self.values = self.controller.backend.categories
