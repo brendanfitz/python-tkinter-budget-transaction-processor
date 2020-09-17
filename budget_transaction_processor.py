@@ -1,9 +1,7 @@
 from tkinter import Tk, ttk, Frame, Menu
 from backend import Backend
-from frames.home import HomeFrame
-from frames.file_select import FileSelectFrame
-from widgets.vendor_entry_popup import VendorEntryPopup
-from widgets.category_entry_popup import CategoryEntryPopup 
+from frames import HomeFrame, FileSelectFrame
+from widgets import VendorEntryPopup, CategoryEntryPopup 
 
 class App(Tk):
 

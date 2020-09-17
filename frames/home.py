@@ -2,9 +2,7 @@ from os import path
 from itertools import count
 import tkinter as tk
 from tkinter import ttk
-from widgets.table_frame import TableFrame
-from widgets.vendor_entry_popup import VendorEntryPopup
-from widgets.category_entry_popup import CategoryEntryPopup 
+from widgets import TableFrame, VendorEntryPopup, CategoryEntryPopup 
 
 class HomeFrame(tk.Frame):
 
