@@ -99,3 +99,7 @@ class App(Tk):
             padding=(0, 15),
             anchor='center'
         )
+        style.configure('SelectFile.TButton',
+            font=('Arial', 8),
+            padding=5
+        )

@@ -59,9 +59,7 @@ class TableFrame(tk.Frame):
     def create_canvas(self):
         canvas = tk.Canvas(
             self, 
-            # width=1466,
             height=315,
-            background='purple',
             bd=0,
             highlightthickness=0,
         )
