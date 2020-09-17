@@ -1,13 +1,10 @@
 import argparse
 from budget_transaction_processor import App
+from windows import set_dpi_awareness
 
-try:
-    from ctypes import windll
-    windll.shcore.SetProcessDpiAwareness(1)
-except:
-    pass
 
 def main(args):
+    set_dpi_awareness()
     app = App(args.test)
     app.mainloop()
 
