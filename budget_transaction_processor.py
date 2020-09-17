@@ -11,8 +11,8 @@ class App(Tk):
         Tk.__init__(self, *args, **kwargs)
         # self.geometry("1800x525")
         self.resizable(False, False)
-        style = ttk.Style(self)
 
+        style = ttk.Style(self)
         style.configure(
             'TCombobox',
             font=('Arial', 10),
@@ -20,7 +20,6 @@ class App(Tk):
             bordercolor='black',
             relief='solid',
         )
-
         style.configure('TCombobox.textarea', font=('Arial', 10))
         style.configure('TCombobox.border', relief='solid')
 
@@ -29,7 +28,7 @@ class App(Tk):
         self.backend = Backend()
 
         self.container = Frame(self)
-        self.container.pack(side="top", fill="both", expand=True)
+        self.container.pack(side="top", fill="both", expand=True, padx=25, pady=25)
         self.container.grid_rowconfigure(0, weight=1)
         self.container.grid_columnconfigure(0, weight=1)
 
