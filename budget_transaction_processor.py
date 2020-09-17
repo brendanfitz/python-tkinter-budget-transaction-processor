@@ -5,7 +5,7 @@ from frames.file_select import FileSelectFrame
 from widgets.vendor_entry_popup import VendorEntryPopup
 from widgets.category_entry_popup import CategoryEntryPopup 
 
-class FinancialTranascationProcessor(Tk):
+class App(Tk):
 
     def __init__(self, testing_mode, *args, **kwargs):
         Tk.__init__(self, *args, **kwargs)

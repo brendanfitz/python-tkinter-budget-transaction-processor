@@ -1,5 +1,5 @@
 import argparse
-from financial_transaction_processor import FinancialTranascationProcessor
+from budget_transaction_processor import App
 
 try:
     from ctypes import windll
@@ -8,7 +8,7 @@ except:
     pass
 
 def main(args):
-    app = FinancialTranascationProcessor(args.test)
+    app = App(args.test)
     app.mainloop()
 
 def parse_args():
