@@ -12,16 +12,7 @@ class App(Tk):
         # self.geometry("1800x525")
         self.resizable(False, False)
 
-        style = ttk.Style(self)
-        style.configure(
-            'TCombobox',
-            font=('Arial', 10),
-            borderwidth=1,
-            bordercolor='black',
-            relief='solid',
-        )
-        style.configure('TCombobox.textarea', font=('Arial', 10))
-        style.configure('TCombobox.border', relief='solid')
+        self.set_style()
 
         self.testing_mode = testing_mode
         self.title("Bank Transaction Processor")
@@ -73,3 +64,30 @@ class App(Tk):
         self.insert_menu.add_command(label="Vendor", command=lambda: VendorEntryPopup(self.home_frame))
 
         self.menu.add_cascade(label="Insert", menu=self.insert_menu)
+    
+    def set_style(self):
+        style = ttk.Style(self)
+        style.configure('.', font=('Arial', 9)) # set root style font
+        style.configure(
+            'DropDown.TCombobox',
+            borderwidth=1,
+            bordercolor='black',
+            relief='solid',
+        )
+        style.configure('DropDown.TCombobox.textarea', font=('Arial', 9))
+        style.configure('DropDown.TCombobox.border', relief='solid')
+        style.configure('TableRow.TLabel',
+            height=1,
+            bd=1,
+            relief="solid",
+            background="white",
+            highlightbackground="blue",
+            padding=(1, 1, 0, 0)
+        )
+        style.configure('TableHeader.TLabel',
+            foreground="white",
+            background="dark slate gray",
+            bd=1,
+            relief="flat",
+            padding=(1, 1, 0, 0)
+        )

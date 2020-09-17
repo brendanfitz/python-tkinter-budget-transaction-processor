@@ -20,8 +20,8 @@ class DropDown(ttk.Combobox):
             text="Choose Vendor/Category",
             textvariable=var,
             values=self.values,
-            font=("Arial", 10),
             width=self.width,
+            style="DropDown.TCombobox",
         )
 
     def set_values(self, type_, var):
