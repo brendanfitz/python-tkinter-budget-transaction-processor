@@ -1,5 +1,5 @@
 from os import path, getcwd
-from tkinter import Frame, Label, Button, PhotoImage, filedialog, BOTH, TOP
+from tkinter import Frame, Label, Button, PhotoImage, filedialog, BOTH, TOP, ttk
 
 class FileSelectFrame(Frame):
 
@@ -7,7 +7,6 @@ class FileSelectFrame(Frame):
         Frame.__init__(self, master)
         self.controller = controller
         self.padding_kwargs = dict(padx=10, pady=10)
-        self.font_kwargs = dict(font=("Arial", 10))
         self.pack_kwargs = dict(expand=True, fill=BOTH)
         self.create_title()
         self.create_empty_frame()
@@ -15,20 +14,24 @@ class FileSelectFrame(Frame):
         self.create_file_label()
 
     def create_title(self):
-        title = Label(self, text="Bank Transaction Processor", font=("Arial", 18), )
-        title.pack(**self.pack_kwargs)
+        title = ttk.Label(
+            self,
+            text="Budget Transaction Processor",
+            style='Title.TLabel'
+        )
+        title.pack(expand=True, fill='both')
 
     def create_select_file_btn(self):
         img_path = path.join(getcwd(), 'img', 'file_open.png')
         image = PhotoImage(file=img_path).subsample(4, 4)
         self.select_file_btn_frame = Frame(self)
         self.select_file_btn_frame.pack(**self.pack_kwargs)
-        self.select_file_btn = Button(self.select_file_btn_frame,
+        self.select_file_btn = Button(
+            self.select_file_btn_frame,
             text="Load Transactions",
             image=image,
             compound=TOP,
             command=self.file_dialog,
-            **self.font_kwargs
         )
         self.select_file_btn.photo = image
         self.select_file_btn.pack()
@@ -43,7 +46,10 @@ class FileSelectFrame(Frame):
         self.filepath = filename_text
         self.file_label_frame = Frame(self)
         self.file_label_frame.pack(**self.pack_kwargs)
-        self.file_label = Label(self.file_label_frame, text=filename_text, **self.font_kwargs)
+        self.file_label = Label(
+            self.file_label_frame,
+            text=filename_text
+        )
         self.file_label.config(height=2, width=30)
         self.file_label.pack()
 
