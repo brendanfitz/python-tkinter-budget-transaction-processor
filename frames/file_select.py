@@ -54,4 +54,3 @@ class FileSelectFrame(Frame):
             self.controller.backend.read_data(self.filepath)
             self.controller.home_frame.create_widgets()
             self.controller.show_frame('home')
-

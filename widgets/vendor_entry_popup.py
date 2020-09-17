@@ -27,7 +27,13 @@ class VendorEntryPopup(Toplevel):
             sticky='NSW',
         )
         self.category_var = StringVar(self.controller)
-        self.category_dropdown = DropDown(self.frame, self.controller, self.category_var, 'Category', width=50)
+        self.category_dropdown = DropDown(
+            self.frame,
+            self.controller,
+            self.category_var, 
+            'Category',
+            width=50
+        )
         self.category_dropdown.grid(row=1, column=1)
         btn = Button(self.frame, text="Submit", command=self.add_vendor)
         btn.grid(row=2, column=0, columnspan=2, padx=10, pady=15)

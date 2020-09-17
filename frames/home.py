@@ -54,4 +54,3 @@ class HomeFrame(tk.Frame):
     def submit(self):
         self.backend.process_button_variables()
         self.controller.destroy()
-    

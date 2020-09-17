@@ -44,7 +44,8 @@ class Backend(object):
     def check_hash_uniqueness(self):
         df = self.transaction_data_to_df()
         if df.loc[:, 'Transaction ID'].duplicated().any():
-            raise ValueError("Duplicates across Transaction Date, Description and Amount dimensions")
+            raise ValueError("Duplicates across Transaction Date, Description "
+                "and Amount dimensions")
     
     def read_categories(self):
         return (pd.read_csv(self.categories_filepath)

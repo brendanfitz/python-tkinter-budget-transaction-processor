@@ -2,7 +2,6 @@ import argparse
 from budget_transaction_processor import App
 from windows import set_dpi_awareness
 
-
 def main(args):
     set_dpi_awareness()
     app = App(args.test)

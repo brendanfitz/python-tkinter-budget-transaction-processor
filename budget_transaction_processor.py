@@ -17,7 +17,12 @@ class App(Tk):
         self.backend = Backend()
 
         self.container = Frame(self)
-        self.container.pack(side="top", fill="both", expand=True, padx=15, pady=15)
+        self.container.pack(side="top",
+            fill="both",
+            expand=True,
+            padx=15,
+            pady=15
+        )
         self.container.grid_rowconfigure(0, weight=1)
         self.container.grid_columnconfigure(0, weight=1)
 
@@ -58,8 +63,14 @@ class App(Tk):
         self.menu.add_cascade(label="File", menu=self.file_menu)
 
         self.insert_menu = Menu(self.menu, tearoff=0)
-        self.insert_menu.add_command(label="Category", command=lambda: CategoryEntryPopup(self.home_frame))
-        self.insert_menu.add_command(label="Vendor", command=lambda: VendorEntryPopup(self.home_frame))
+        self.insert_menu.add_command(
+            label="Category",
+            command=lambda: CategoryEntryPopup(self.home_frame)
+        )
+        self.insert_menu.add_command(
+            label="Vendor",
+            command=lambda: VendorEntryPopup(self.home_frame)
+        )
 
         self.menu.add_cascade(label="Insert", menu=self.insert_menu)
     

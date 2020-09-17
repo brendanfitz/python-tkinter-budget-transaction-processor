@@ -36,7 +36,9 @@ class DropDown(ttk.Combobox):
     def vendor_change_callback(self, var_name, idx, access_mode):
         trans_id = var_name.split('_')[1]
         var_name_filter = lambda x: x['Transaction ID'] == trans_id 
-        row = next(filter(var_name_filter, self.controller.backend.transaction_data))
+        row = next(
+            filter(var_name_filter, self.controller.backend.transaction_data)
+        )
 
         category_var = row['category_var']
         vendor = row['vendor_var'].get()
@@ -50,5 +52,3 @@ class DropDown(ttk.Combobox):
        
     def add_category(self, category):
         self['values'] = (*self['values'], category)
-       
-

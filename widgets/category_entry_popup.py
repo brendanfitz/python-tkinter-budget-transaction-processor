@@ -1,7 +1,6 @@
 from tkinter import Toplevel, Frame, Label, Entry, Button, StringVar, messagebox
 from widgets.dropdown import DropDown
 
-
 class CategoryEntryPopup(Toplevel):
 
     def __init__(self, controller):
@@ -36,6 +35,3 @@ class CategoryEntryPopup(Toplevel):
                 self.destroy()
             except ValueError:
                 messagebox.showerror("Error", "Category Already Exists")
-
-
-
