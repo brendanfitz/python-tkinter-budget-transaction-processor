@@ -18,7 +18,7 @@ class TableFrame(tk.Frame):
         self.top_bar = self.create_top_bar()
         self.top_bar.grid(row=0, column=0, sticky='nsw')
         self.canvas = CanvasTable(self)
-        self.canvas.grid(row=1, column=0, sticky='nsw')
+        self.canvas.grid(row=1, column=0, sticky='nsew')
         self.scrolly = self.create_scrolly()
         self.scrolly.grid(row=1, column=1, rowspan=1, sticky='nsw')
     
@@ -32,7 +32,7 @@ class TableFrame(tk.Frame):
                 fg="white",
                 background="dark slate gray",
                 bd=1,
-                relief="solid",
+                relief="flat",
                 padx=2,
                 anchor=TableFrame.COLUMN_ALIGNMENTS[column],
                 **TableFrame.FONT_KWARGS

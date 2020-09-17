@@ -21,7 +21,7 @@ class CanvasTable(tk.Canvas):
     def __init__(self, master):
         tk.Canvas.__init__(self, 
             master,
-            width=1666,
+            # width=1466,
             height=315,
             background='purple',
             bd=0,
