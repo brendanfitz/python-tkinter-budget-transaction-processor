@@ -2,21 +2,27 @@ import tkinter as tk
 from tkinter import ttk
 
 class DropDown(ttk.Combobox):
+    COLUMN_WIDTHS = {
+        'Transaction Date': 15,
+        'Description': 64,
+        'Amount': 9,
+        'Vendor': 31,
+        'Category': 25, 
+    }
 
     def __init__(self, master, controller, var, type_, width=None):
         self.controller = controller 
         self.var = var
         self.set_values(type_, var)
-        if width is None:
-            width = self.controller.calc_column_width(type_)
+        self.width = width or DropDown.COLUMN_WIDTHS[type_]
         ttk.Combobox.__init__(self, 
             master,
             text="Choose Vendor/Category",
             textvariable=var,
             values=self.values,
             font=("Arial", 10),
+            width=self.width,
         )
-        self.config(width=width)
 
     def set_values(self, type_, var):
         if type_ == 'Vendor':

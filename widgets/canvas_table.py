@@ -9,13 +9,19 @@ class CanvasTable(tk.Canvas):
         'Vendor': tk.W,
         'Category': tk.W, 
     }
+    COLUMN_WIDTHS = {
+        'Transaction Date': 15,
+        'Description': 64,
+        'Amount': 9,
+        'Vendor': 31,
+        'Category': 25, 
+    }
     FONT_KWARGS = dict(font=('Arial', 10))
 
     def __init__(self, master):
         tk.Canvas.__init__(self, 
             master,
-            # width=1180,
-            width=1666,
+            # width=1466,
             height=315,
             background='purple',
             bd=0,
@@ -42,11 +48,13 @@ class CanvasTable(tk.Canvas):
             table_row = tk.Frame(self.table_frame, background="white")
             table_row.grid(row=r, column=0, sticky="w")
             for c, column in enumerate(columns):
-                width = self.master.calc_column_width(column)
+                text = transaction[column]
+                if column == 'Description' and len(text) > 64:
+                    text = text[:(82-3)] + '...' 
                 label = tk.Label(
                     table_row,
-                    text=transaction[column],
-                    width=width,
+                    text=text,
+                    width=CanvasTable.COLUMN_WIDTHS[column],
                     height=1,
                     bd=1,
                     relief="solid",
@@ -56,7 +64,6 @@ class CanvasTable(tk.Canvas):
                     anchor=CanvasTable.COLUMN_ALIGNMENTS[column],
                     **CanvasTable.FONT_KWARGS
                 )
-                # label.config(highlightbackground="gray", highlightcolor= "gray")
                 label.grid(row=0, column=c, sticky='ns')
         
             trans_id = transaction['Transaction ID']

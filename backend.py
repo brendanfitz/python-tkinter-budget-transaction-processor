@@ -37,6 +37,7 @@ class Backend(object):
             transaction_hash = hashlib.md5(rowstring.encode()).hexdigest()
             transaction['Transaction ID'] = transaction_hash
             transaction['File ID'] = self.filename + '__' + str(row_num+1)
+        self.columns.insert(0, 'File ID')
         self.columns.insert(0, 'Transaction ID')
         self.check_hash_uniqueness()
     
