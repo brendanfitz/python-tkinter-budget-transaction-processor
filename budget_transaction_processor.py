@@ -7,7 +7,6 @@ class App(Tk):
 
     def __init__(self, testing_mode, *args, **kwargs):
         Tk.__init__(self, *args, **kwargs)
-        # self.geometry("1800x525")
         self.resizable(False, False)
 
         self.set_style()
