@@ -7,8 +7,8 @@ class TableFrame(tk.Frame):
         'Transaction Date': tk.W,
         'Description': tk.W,
         'Amount': tk.E,
-        'Vendor': tk.W,
-        'Category': tk.W, 
+        'Vendor': 'center',
+        'Category': 'center', 
     }
     COLUMN_WIDTHS = {
         'Transaction Date': 15,
@@ -26,7 +26,7 @@ class TableFrame(tk.Frame):
         self.canvas = self.create_canvas()
         self.canvas.grid(row=1, column=0, sticky='nsew')
         self.table_frame = self.create_table_frame()
-        self.create_table()
+        self.add_data_to_table_frame()
         self.scrolly = self.create_scrolly()
         self.scrolly.grid(row=1, column=1, rowspan=1, sticky='nsw')
     
@@ -65,7 +65,7 @@ class TableFrame(tk.Frame):
         )
         return canvas
 
-    def create_table_frame(self):
+    def add_data_to_table_frame(self):
         table_frame = tk.Frame(self.canvas, background="gray")
         table_frame.grid(row=0, column=0, sticky="ew")
         table_frame.bind(
