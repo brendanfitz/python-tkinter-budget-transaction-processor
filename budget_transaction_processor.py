@@ -7,6 +7,11 @@ class App(Tk):
 
     def __init__(self, testing_mode, *args, **kwargs):
         Tk.__init__(self, *args, **kwargs)
+        
+        icon_filepath = 'img/budget.ico'
+        self.wm_iconbitmap(icon_filepath)
+        self.iconbitmap(default=icon_filepath)
+
         self.resizable(False, False)
 
         self.set_style()
