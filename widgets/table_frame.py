@@ -65,7 +65,7 @@ class TableFrame(tk.Frame):
         )
         return canvas
 
-    def add_data_to_table_frame(self):
+    def create_table_frame(self):
         table_frame = tk.Frame(self.canvas, background="gray")
         table_frame.grid(row=0, column=0, sticky="ew")
         table_frame.bind(
@@ -77,7 +77,7 @@ class TableFrame(tk.Frame):
         self.canvas.create_window((0, 0), window=table_frame, anchor="nw")
         return table_frame
     
-    def create_table(self):
+    def add_data_to_table_frame(self):
         columns = ['Transaction Date','Description','Amount']
         
         for r, transaction in enumerate(self.backend.transaction_data):
