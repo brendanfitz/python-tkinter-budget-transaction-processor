@@ -17,6 +17,13 @@ class TableFrame(tk.Frame):
         'Vendor': 31,
         'Category': 25, 
     }
+    COLUMNS = [
+        'Transaction Date',
+        'Description',
+        'Amount',
+        'Vendor',
+        'Category'
+    ]
 
     def __init__(self, master, backend):
         ttk.Frame.__init__(self, master)
@@ -31,9 +38,8 @@ class TableFrame(tk.Frame):
         self.scrolly.grid(row=1, column=1, rowspan=1, sticky='nsw')
     
     def create_top_bar(self):
-        columns = ['Transaction Date', 'Description', 'Amount']
         top_bar = tk.Frame(self, background='dark slate gray')
-        for c, column in enumerate(columns + ['Vendor', 'Category']):
+        for c, column in enumerate(TableFrame.COLUMN_WIDTHS):
             label = ttk.Label(
                 top_bar,
                 text=column,
@@ -78,12 +84,10 @@ class TableFrame(tk.Frame):
         return table_frame
     
     def add_data_to_table_frame(self):
-        columns = ['Transaction Date','Description','Amount']
-        
         for r, transaction in enumerate(self.backend.transaction_data):
             table_row = tk.Frame(self.table_frame, background="white")
             table_row.grid(row=r, column=0, sticky="w")
-            for c, column in enumerate(columns):
+            for c, column in enumerate(TableFrame.COLUMNS[:3]):
                 text = transaction[column]
                 if column == 'Description' and len(text) > 64:
                     text = text[:(82-3)] + '...' 
