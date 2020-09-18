@@ -17,7 +17,7 @@ class App(Tk):
         self.set_style()
 
         self.testing_mode = testing_mode
-        self.title("Bank Transaction Processor")
+        self.title("Budget Transaction Processor")
         self.backend = Backend()
 
         self.container = Frame(self)
